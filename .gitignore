@@ -7,3 +7,6 @@ lib/
 lib64
 pyvenv.cfg
 esp32-clock-backups/
+**/#auto_saved_files#
+*.lck
+*.bak
