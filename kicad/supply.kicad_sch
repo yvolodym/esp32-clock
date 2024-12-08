@@ -4821,7 +4821,7 @@
 				)
 			)
 		)
-		(property "Value" "ME6211"
+		(property "Value" "ME6211H33M5G"
 			(at 244.475 78.105 0)
 			(effects
 				(font
@@ -5041,7 +5041,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector:JWT_A3963_1x02_P3.96mm_Vertical"
 			(at 118.745 113.03 0)
 			(effects
 				(font
