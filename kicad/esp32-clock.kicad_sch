@@ -2201,6 +2201,16 @@
 				(justify left top)
 			)
 		)
+		(pin "USB_D_N" input
+			(at 191.77 41.91 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "76a6f099-c34f-4694-85eb-dbc282c7485c")
+		)
 		(instances
 			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"

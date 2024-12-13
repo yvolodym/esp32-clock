@@ -2694,6 +2694,16 @@
 	)
 	(wire
 		(pts
+			(xy 85.09 78.105) (xy 77.47 78.105)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3feccff5-9642-4bd2-a79b-66e3d0415d7f")
+	)
+	(wire
+		(pts
 			(xy 260.35 99.695) (xy 260.35 97.155)
 		)
 		(stroke
@@ -3301,6 +3311,18 @@
 			(type default)
 		)
 		(uuid "fc15e914-99a8-494a-bd54-897c374de3cf")
+	)
+	(hierarchical_label "USB_D_N"
+		(shape input)
+		(at 85.09 78.105 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "370b4fd5-eb95-4b77-8bc3-55a75e018156")
 	)
 	(symbol
 		(lib_id "power:GND")
