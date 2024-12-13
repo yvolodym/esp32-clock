@@ -1202,6 +1202,26 @@
 	)
 	(wire
 		(pts
+			(xy 104.14 75.565) (xy 118.11 75.565)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3696450d-d785-4b84-98db-4501b0d37913")
+	)
+	(wire
+		(pts
+			(xy 104.14 70.485) (xy 114.935 70.485)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "40a13db1-1b47-4d1a-9f86-ba0796c26ab1")
+	)
+	(wire
+		(pts
 			(xy 54.61 67.945) (xy 54.61 73.025)
 		)
 		(stroke
@@ -1242,6 +1262,16 @@
 	)
 	(wire
 		(pts
+			(xy 114.935 45.72) (xy 191.77 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5df9c196-94c0-439e-8a25-290d0c510044")
+	)
+	(wire
+		(pts
 			(xy 54.61 73.025) (xy 54.61 74.295)
 		)
 		(stroke
@@ -1249,6 +1279,16 @@
 			(type default)
 		)
 		(uuid "611b47ad-6f41-45c5-9119-9e4678121e18")
+	)
+	(wire
+		(pts
+			(xy 118.11 51.435) (xy 191.77 51.435)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "637f4192-e970-4f18-af5d-1c1f5a3db92f")
 	)
 	(wire
 		(pts
@@ -1322,6 +1362,16 @@
 	)
 	(wire
 		(pts
+			(xy 114.935 70.485) (xy 114.935 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c578024a-c947-4c3d-99a6-db8f6a77023a")
+	)
+	(wire
+		(pts
 			(xy 121.285 67.945) (xy 128.905 67.945)
 		)
 		(stroke
@@ -1349,6 +1399,16 @@
 			(type default)
 		)
 		(uuid "ca5812a6-c8d1-454d-b4ff-29a711155432")
+	)
+	(wire
+		(pts
+			(xy 118.11 75.565) (xy 118.11 51.435)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dbc59807-cb40-468e-ac82-aba7d73d1552")
 	)
 	(wire
 		(pts
@@ -2201,15 +2261,35 @@
 				(justify left top)
 			)
 		)
-		(pin "USB_D_N" input
-			(at 191.77 41.91 180)
+		(pin "RTS" input
+			(at 191.77 40.64 180)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "76a6f099-c34f-4694-85eb-dbc282c7485c")
+			(uuid "b11cfecf-86dc-44ae-a70b-07058cbda12b")
+		)
+		(pin "TXD" input
+			(at 191.77 45.72 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "e06aefdd-a874-4b37-b411-c70d9d052e8d")
+		)
+		(pin "RXD" input
+			(at 191.77 51.435 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "a84cebc3-7d13-4d63-85ff-2984266255af")
 		)
 		(instances
 			(project "esp32-clock"
