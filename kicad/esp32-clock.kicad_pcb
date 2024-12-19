@@ -128,6 +128,7 @@
 	(net 46 "unconnected-(U2-~{RXT}{slash}GPIO.3-Pad19)")
 	(net 47 "unconnected-(U5-NC-Pad4)")
 	(net 48 "+5V")
+	(net 49 "unconnected-(SW2-Pad2)_1")
 	(footprint "Button_Switch_SMD:SW_SPST_CK_KMS2xxGP"
 		(layer "F.Cu")
 		(uuid "068ab0b5-9788-423c-a63d-5bbb0756ac05")
@@ -402,7 +403,7 @@
 			(roundrect_rratio 0.15)
 			(net 18 "unconnected-(SW2-Pad2)")
 			(pinfunction "2")
-			(pintype "passive")
+			(pintype "passive+no_connect")
 			(uuid "54bd07e0-0b56-4830-8311-bf8c976d9106")
 		)
 		(pad "2" smd roundrect
@@ -410,9 +411,9 @@
 			(size 0.9 1)
 			(layers "F.Cu" "F.Paste" "F.Mask")
 			(roundrect_rratio 0.15)
-			(net 18 "unconnected-(SW2-Pad2)")
+			(net 49 "unconnected-(SW2-Pad2)_1")
 			(pinfunction "2")
-			(pintype "passive")
+			(pintype "passive+no_connect")
 			(uuid "f80e2de6-73bb-40f9-8db5-f5f1bea5e7c5")
 		)
 		(pad "SH" smd roundrect
@@ -2360,7 +2361,7 @@
 			(roundrect_rratio 0.25)
 			(net 6 "unconnected-(P1-VCONN-PadB5)")
 			(pinfunction "VCONN")
-			(pintype "bidirectional")
+			(pintype "bidirectional+no_connect")
 			(uuid "0d6df6dd-4186-4536-9dd7-c2d3ab34768f")
 		)
 		(pad "B9" smd roundrect
