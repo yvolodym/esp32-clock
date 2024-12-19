@@ -2706,7 +2706,7 @@
 		(descr "Resistor SMD 2816 (7142 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size from: https://www.vishay.com/docs/30100/wsl.pdf), generated with kicad-footprint-generator")
 		(tags "resistor")
 		(property "Reference" "R7"
-			(at 0 -3.18 360)
+			(at 0 -3.18 0)
 			(layer "F.SilkS")
 			(uuid "d67c2449-a703-4e2b-ae64-303970863de4")
 			(effects
@@ -2717,7 +2717,7 @@
 			)
 		)
 		(property "Value" "2K"
-			(at 0 3.18 360)
+			(at 0 3.18 0)
 			(layer "F.Fab")
 			(uuid "2b39f75d-dd19-4dcd-a4ef-f46f8024952d")
 			(effects
@@ -2872,7 +2872,7 @@
 			(uuid "845d6ac4-96a8-4e05-a2d7-0f213fd209f5")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(uuid "0327c54e-709f-4d1f-9b83-2606710f7363")
 			(effects
@@ -7233,7 +7233,7 @@
 	(footprint "Package_TO_SOT_SMD:SOT-23"
 		(layer "F.Cu")
 		(uuid "d57f7296-6a0b-4247-a884-ea09f636d6cf")
-		(at 134 91 -90)
+		(at 133 88.0625 -90)
 		(descr "SOT, 3 Pin (JEDEC TO-236 Var AB https://www.jedec.org/document_search?search_api_views_fulltext=TO-236), generated with kicad-footprint-generator ipc_gullwing_generator.py")
 		(tags "SOT TO_SOT_SMD")
 		(property "Reference" "D4"
