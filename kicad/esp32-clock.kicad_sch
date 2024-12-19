@@ -1430,7 +1430,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "135e01e1-5c18-4f37-9e1b-a8a823f549ec")
-		(property "Reference" "U3"
+		(property "Reference" "U1"
 			(at 91.0941 60.96 0)
 			(effects
 				(font
@@ -1544,7 +1544,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
-					(reference "U3")
+					(reference "U1")
 					(unit 1)
 				)
 			)
@@ -1559,7 +1559,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "136ad805-cef1-4ead-b036-326776d8f93c")
-		(property "Reference" "C6"
+		(property "Reference" "C2"
 			(at 125.095 77.4699 0)
 			(effects
 				(font
@@ -1577,7 +1577,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 122.2502 82.55 0)
 			(effects
 				(font
@@ -1613,7 +1613,7 @@
 		(instances
 			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
-					(reference "C6")
+					(reference "C2")
 					(unit 1)
 				)
 			)
@@ -1700,7 +1700,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5d4cd618-e17e-48d2-a41f-c09a5551f5a1")
-		(property "Reference" "#PWR09"
+		(property "Reference" "#PWR03"
 			(at 88.9 66.675 0)
 			(effects
 				(font
@@ -1750,7 +1750,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
-					(reference "#PWR09")
+					(reference "#PWR03")
 					(unit 1)
 				)
 			)
@@ -1766,7 +1766,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c1d71142-9545-4123-ae89-5bfbceff36b1")
-		(property "Reference" "#PWR012"
+		(property "Reference" "#PWR01"
 			(at 41.91 93.345 0)
 			(effects
 				(font
@@ -1816,7 +1816,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
-					(reference "#PWR012")
+					(reference "#PWR01")
 					(unit 1)
 				)
 			)
@@ -1832,7 +1832,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c21dbc6a-661a-4c22-83d5-ea2543a6eac9")
-		(property "Reference" "#PWR010"
+		(property "Reference" "#PWR04"
 			(at 88.9 107.315 0)
 			(effects
 				(font
@@ -1882,7 +1882,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
-					(reference "#PWR010")
+					(reference "#PWR04")
 					(unit 1)
 				)
 			)
@@ -1898,7 +1898,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c8e9a8fb-da03-4c0f-83b9-cc7e1bb7a6c1")
-		(property "Reference" "#PWR011"
+		(property "Reference" "#PWR05"
 			(at 133.985 90.805 0)
 			(effects
 				(font
@@ -1948,7 +1948,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
-					(reference "#PWR011")
+					(reference "#PWR05")
 					(unit 1)
 				)
 			)
@@ -1964,7 +1964,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d0bf7c44-e662-4cb5-9663-73b2767b74bc")
-		(property "Reference" "#PWR013"
+		(property "Reference" "#PWR02"
 			(at 54.61 64.135 0)
 			(effects
 				(font
@@ -2014,7 +2014,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
-					(reference "#PWR013")
+					(reference "#PWR02")
 					(unit 1)
 				)
 			)
@@ -2101,7 +2101,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "dad4e4d0-81ea-46b7-b056-de4f14534f26")
-		(property "Reference" "C3"
+		(property "Reference" "C1"
 			(at 58.42 76.8349 0)
 			(effects
 				(font
@@ -2119,7 +2119,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 55.5752 81.915 0)
 			(effects
 				(font
@@ -2155,7 +2155,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
-					(reference "C3")
+					(reference "C1")
 					(unit 1)
 				)
 			)
@@ -2171,7 +2171,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ee3f76eb-5f5a-40e4-8769-9f750112fd82")
-		(property "Reference" "R6"
+		(property "Reference" "R1"
 			(at 57.15 62.8649 0)
 			(effects
 				(font
@@ -2189,7 +2189,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0201_0603Metric"
+		(property "Footprint" "Resistor_SMD:R_2816_7142Metric"
 			(at 52.832 64.135 90)
 			(effects
 				(font
@@ -2225,7 +2225,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
-					(reference "R6")
+					(reference "R1")
 					(unit 1)
 				)
 			)
