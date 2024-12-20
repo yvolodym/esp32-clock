@@ -12,3 +12,4 @@ esp32-clock-backups/
 *.bak
 fp-info-cache
 kicad/jlcpcb/
+**/*.zip
