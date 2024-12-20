@@ -7,5 +7,8 @@ This project is intended as training for esp8266. The aim of this project is to 
 * https://jlcpcb.com/blog/guide-to-multiboard-pcb-design
 * https://tttapa.github.io/ESP8266/Chap02%20-%20Hardware.html
 
+### JLCPCB
+* https://jlcpcb.com/parts/componentSearch
+
 ### Video
 * https://www.youtube.com/watch?v=S_p0YV-JlfU

@@ -1,4 +1,4 @@
 (fp_lib_table
   (version 7)
-  (lib (name "libs")(type "KiCad")(uri "/home/eugen/workspace/Arduino/esp32-clock/libs")(options "")(descr ""))
+  (lib (name "libs")(type "KiCad")(uri "../libs")(options "")(descr ""))
 )
