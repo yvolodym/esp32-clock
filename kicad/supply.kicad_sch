@@ -3179,12 +3179,6 @@
 		(uuid "c1e5cc73-d9aa-45f7-b96a-c613f7993395")
 	)
 	(junction
-		(at 54.61 106.68)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "c8d12441-6b95-43f0-8fe1-25ac30f036b6")
-	)
-	(junction
 		(at 234.95 83.82)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3411,6 +3405,16 @@
 			(type default)
 		)
 		(uuid "1b122a45-b8b5-48fe-bb44-36a59c704fc9")
+	)
+	(wire
+		(pts
+			(xy 95.25 60.96) (xy 95.25 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1c488ee4-0a93-4123-9185-fa65c3d4555a")
 	)
 	(wire
 		(pts
@@ -3874,16 +3878,6 @@
 	)
 	(wire
 		(pts
-			(xy 54.61 106.68) (xy 54.61 109.22)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "76e39049-f0cc-4194-a88d-beee356a2939")
-	)
-	(wire
-		(pts
 			(xy 123.19 133.35) (xy 123.19 148.59)
 		)
 		(stroke
@@ -3941,16 +3935,6 @@
 			(type default)
 		)
 		(uuid "7e6a6b7a-b125-4e07-b39a-132c4d11742f")
-	)
-	(wire
-		(pts
-			(xy 95.25 60.96) (xy 95.25 66.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7e85d037-97b3-49f5-9945-40949baf4c57")
 	)
 	(wire
 		(pts
@@ -4587,6 +4571,72 @@
 		(uuid "f982429d-9241-49d5-9b91-f918b1498be8")
 	)
 	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 95.25 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0191c9e8-3966-44bf-a224-e34bea7a8817")
+		(property "Reference" "#FLG01"
+			(at 95.25 59.055 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 95.25 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 95.25 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 95.25 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 95.25 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8e853ad4-51df-4ef7-a185-da430637a481")
+		)
+		(instances
+			(project "esp32-clock"
+				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
+					(reference "#FLG01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 260.35 100.33 0)
 		(unit 1)
@@ -4596,7 +4646,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "027ba0cc-bca2-4481-bbed-c9c471315a2a")
-		(property "Reference" "#PWR020"
+		(property "Reference" "#PWR021"
 			(at 260.35 106.68 0)
 			(effects
 				(font
@@ -4646,7 +4696,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "#PWR020")
+					(reference "#PWR021")
 					(unit 1)
 				)
 			)
@@ -4728,7 +4778,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "090b4315-7c1e-4e9c-8362-7eabd8995b8f")
-		(property "Reference" "#PWR023"
+		(property "Reference" "#PWR020"
 			(at 209.55 156.21 0)
 			(effects
 				(font
@@ -4778,7 +4828,7 @@
 		(instances
 			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "#PWR023")
+					(reference "#PWR020")
 					(unit 1)
 				)
 			)
@@ -4793,7 +4843,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "097b2e30-1f1a-4880-8734-74e90d459829")
-		(property "Reference" "#PWR018"
+		(property "Reference" "#PWR017"
 			(at 152.4 82.55 0)
 			(effects
 				(font
@@ -4843,7 +4893,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "#PWR018")
+					(reference "#PWR017")
 					(unit 1)
 				)
 			)
@@ -4859,7 +4909,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0da1ee6c-962b-4b9b-a45f-323a92f29b29")
-		(property "Reference" "#FLG03"
+		(property "Reference" "#FLG02"
 			(at 219.71 78.105 0)
 			(effects
 				(font
@@ -4909,7 +4959,7 @@
 		(instances
 			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "#FLG03")
+					(reference "#FLG02")
 					(unit 1)
 				)
 			)
@@ -5546,7 +5596,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "463a9534-f6e3-4b53-a727-0af6dac66cdb")
-		(property "Reference" "D3"
+		(property "Reference" "D4"
 			(at 208.28 77.47 0)
 			(effects
 				(font
@@ -5625,7 +5675,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "D3")
+					(reference "D4")
 					(unit 1)
 				)
 			)
@@ -5706,7 +5756,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "5a7b0c78-067d-44a1-b496-458c318d8a4f")
-		(property "Reference" "R7"
+		(property "Reference" "R9"
 			(at 166.37 88.265 90)
 			(effects
 				(font
@@ -5758,7 +5808,7 @@
 		(instances
 			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "R7")
+					(reference "R9")
 					(unit 1)
 				)
 			)
@@ -5912,7 +5962,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "70ce3905-a4c5-4700-a442-7e946f5be824")
-		(property "Reference" "D4"
+		(property "Reference" "D5"
 			(at 209.55 88.9 0)
 			(effects
 				(font
@@ -5968,7 +6018,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "D4")
+					(reference "D5")
 					(unit 1)
 				)
 			)
@@ -5984,7 +6034,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "70e1abd6-6c41-46c7-a436-3d8cc6ebf90c")
-		(property "Reference" "C11"
+		(property "Reference" "C8"
 			(at 212.725 140.9699 0)
 			(effects
 				(font
@@ -6038,7 +6088,7 @@
 		(instances
 			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "C11")
+					(reference "C8")
 					(unit 1)
 				)
 			)
@@ -6185,72 +6235,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 54.61 109.22 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "86042330-0024-43ce-ba3c-05f3ae012f02")
-		(property "Reference" "#FLG01"
-			(at 54.61 111.125 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 54.61 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 54.61 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 54.61 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 54.61 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1f36a12f-8cff-42e4-a466-90434074bd58")
-		)
-		(instances
-			(project ""
-				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "#FLG01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 187.96 91.44 0)
 		(unit 1)
@@ -6260,7 +6244,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8633c184-db5a-4363-bf33-a9e6599dcebf")
-		(property "Reference" "R9"
+		(property "Reference" "R10"
 			(at 189.865 90.1699 0)
 			(effects
 				(font
@@ -6314,7 +6298,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "R9")
+					(reference "R10")
 					(unit 1)
 				)
 			)
@@ -6461,72 +6445,6 @@
 			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
 					(reference "R3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 95.25 60.96 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "8c2fbfe9-c685-4785-8e44-c1d2e1ec4536")
-		(property "Reference" "#FLG02"
-			(at 95.25 59.055 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 95.25 55.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 95.25 60.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 95.25 60.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 95.25 60.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f8327fed-a84a-4012-beff-950969f6eb26")
-		)
-		(instances
-			(project "esp32-clock"
-				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "#FLG02")
 					(unit 1)
 				)
 			)
@@ -6814,7 +6732,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a8642f3b-178a-4399-adc7-d811986185a9")
-		(property "Reference" "#PWR016"
+		(property "Reference" "#PWR015"
 			(at 142.24 160.02 0)
 			(effects
 				(font
@@ -6865,7 +6783,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "#PWR016")
+					(reference "#PWR015")
 					(unit 1)
 				)
 			)
@@ -6982,7 +6900,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "bdf656e0-4b28-4578-8862-b8b11538bfa8")
-		(property "Reference" "#PWR017"
+		(property "Reference" "#PWR016"
 			(at 147.32 81.28 0)
 			(effects
 				(font
@@ -7032,7 +6950,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "#PWR017")
+					(reference "#PWR016")
 					(unit 1)
 				)
 			)
@@ -7048,7 +6966,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "be91a188-f806-44a2-9a7d-cfc023d5926f")
-		(property "Reference" "#PWR022"
+		(property "Reference" "#PWR018"
 			(at 165.1 81.28 0)
 			(effects
 				(font
@@ -7098,7 +7016,7 @@
 		(instances
 			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "#PWR022")
+					(reference "#PWR018")
 					(unit 1)
 				)
 			)
@@ -7179,7 +7097,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "d0a4a4a2-9412-4da2-891f-42c4dcf1e8bd")
-		(property "Reference" "J2"
+		(property "Reference" "J1"
 			(at 239.395 137.16 0)
 			(effects
 				(font
@@ -7231,7 +7149,7 @@
 		(instances
 			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "J2")
+					(reference "J1")
 					(unit 1)
 				)
 			)
@@ -7471,7 +7389,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "eefff714-608c-4663-a069-e2d6dc8a600d")
-		(property "Reference" "D5"
+		(property "Reference" "D3"
 			(at 139.065 97.155 0)
 			(effects
 				(font
@@ -7523,7 +7441,7 @@
 		(instances
 			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "D5")
+					(reference "D3")
 					(unit 1)
 				)
 			)
@@ -7539,7 +7457,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f0163101-ea52-4237-9d14-d676977bf659")
-		(property "Reference" "#PWR021"
+		(property "Reference" "#PWR022"
 			(at 273.05 83.82 0)
 			(effects
 				(font
@@ -7589,7 +7507,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "#PWR021")
+					(reference "#PWR022")
 					(unit 1)
 				)
 			)
@@ -7685,7 +7603,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f43f98f7-6dc6-4578-8155-e103e8e33602")
-		(property "Reference" "#PWR015"
+		(property "Reference" "#PWR014"
 			(at 132.08 148.59 0)
 			(effects
 				(font
@@ -7736,7 +7654,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "#PWR015")
+					(reference "#PWR014")
 					(unit 1)
 				)
 			)
@@ -7884,7 +7802,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "fc9a9044-65ac-4e9d-9cee-fa8c63efae6a")
-		(property "Reference" "R10"
+		(property "Reference" "R7"
 			(at 147.32 88.265 90)
 			(effects
 				(font
@@ -7936,7 +7854,7 @@
 		(instances
 			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "R10")
+					(reference "R7")
 					(unit 1)
 				)
 			)
