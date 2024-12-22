@@ -7845,6 +7845,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C4502"
+			(at 147.32 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "7d07985b-382c-4568-ba33-bd53c25ebe7b")
 		)
