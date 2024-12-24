@@ -7113,7 +7113,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector:JWT_A3963_1x02_P3.96mm_Vertical"
+		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x02_P1.00mm_Vertical"
 			(at 240.03 132.08 0)
 			(effects
 				(font
@@ -7132,6 +7132,15 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x02, script generated"
+			(at 240.03 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" ""
 			(at 240.03 132.08 0)
 			(effects
 				(font
