@@ -8142,7 +8142,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_PLCC-2_3.4x3.0mm_AK"
+		(property "Footprint" "Diode_SMD:D_0603_1608Metric"
 			(at 129.54 100.33 0)
 			(effects
 				(font
@@ -8209,7 +8209,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_PLCC-2_3.4x3.0mm_AK"
+		(property "Footprint" "Diode_SMD:D_0603_1608Metric"
 			(at 138.43 92.71 0)
 			(effects
 				(font
