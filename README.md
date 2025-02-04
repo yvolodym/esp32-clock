@@ -7,6 +7,12 @@ This project is intended as training for esp8266. The aim of this project is to 
 * https://jlcpcb.com/blog/guide-to-multiboard-pcb-design
 * https://tttapa.github.io/ESP8266/Chap02%20-%20Hardware.html
 
+### Software
+* https://github.com/espressif/esp-idf/tree/v5.4/examples/peripherals/lcd/i2c_oled/main
+* https://github.com/UsefulElectronics/esp32s3-gc9a01-lvgl/blob/main/main/Kconfig.projbuild
+* https://github.com/liyanboy74/gc9a01-esp-idf
+* https://github.com/somebox/esp32-GC9A01-round/blob/main/src/main.cpp
+
 ### Schematik
 * https://embeddedprojects101.com/design-a-battery-powered-stm32-board-with-usb/
 
