@@ -21,3 +21,8 @@ This project is intended as training for esp8266. The aim of this project is to 
 
 ### Video
 * https://www.youtube.com/watch?v=S_p0YV-JlfU
+
+
+### WIFI Provisioning
+* https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/provisioning/wifi_provisioning.html#
+* https://github.com/espressif/esp-idf/blob/master/examples/provisioning/wifi_prov_mgr/README.md
