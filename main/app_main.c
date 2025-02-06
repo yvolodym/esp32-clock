@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-
+#include <esp_wifi.h>
 #include "driver/gpio.h"
 #include "sdkconfig.h"
+#include <nvs_flash.h>
+#include <esp_event.h>
 
 #include "gc9a01/gc9a01.h"
-
 
 #define STACK_SIZE 2048
 
@@ -38,7 +39,7 @@ void LCD(void *arg)
 void wifi_manager(void)
 {
     /* Initialize NVS partition */
-    esp_err_t ret = esp_flash_init();
+    esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
     {
         /* NVS partition was truncated
@@ -46,7 +47,7 @@ void wifi_manager(void)
         ESP_ERROR_CHECK(nvs_flash_erase());
 
         /* Retry nvs_flash_init */
-        ESP_ERROR_CHECK(esp_flash_init());
+        ESP_ERROR_CHECK(nvs_flash_init());
     }
 
     /* Initialize TCP/IP */
