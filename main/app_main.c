@@ -1,306 +1,312 @@
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include <esp_wifi.h>
-#include "driver/gpio.h"
-#include "sdkconfig.h"
-#include <nvs_flash.h>
-#include <esp_event.h>
+/*
+ * SPDX-FileCopyrightText: 2021-2024 Espressif Systems (Shanghai) CO LTD
+ *
+ * SPDX-License-Identifier: CC0-1.0
+ */
 
-#include "gc9a01/gc9a01.h"
-
-#define STACK_SIZE 2048
-
-void LCD(void *arg);
-void wifi_manager(void);
-
-void app_main(void)
-{
-    TaskHandle_t LCDHandle;
-
-    xTaskCreate(LCD, "Test LCD", STACK_SIZE, NULL, tskIDLE_PRIORITY, &LCDHandle);
-    configASSERT(LCDHandle);
-}
-
-void LCD(void *arg)
-{
-    uint16_t Color;
-    GC9A01_Init();
-    for (;;)
-    {
-        Color = rand();
-        GC9A01_FillRect(0, 0, 239, 239, Color);
-        GC9A01_Update();
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
-}
-
-
-void wifi_manager(void)
-{
-    /* Initialize NVS partition */
-    esp_err_t ret = nvs_flash_init();
-    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
-    {
-        /* NVS partition was truncated
-         * and needs to be erased */
-        ESP_ERROR_CHECK(nvs_flash_erase());
-
-        /* Retry nvs_flash_init */
-        ESP_ERROR_CHECK(nvs_flash_init());
-    }
-
-    /* Initialize TCP/IP */
-    ESP_ERROR_CHECK(esp_netif_init());
-
-    /* Initialize the event loop */
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
-    wifi_event_group = xEventGroupCreate();
-
-    /* Register our event handler for Wi-Fi, IP and Provisioning related events */
-    ESP_ERROR_CHECK(esp_event_handler_register(WIFI_PROV_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
-#ifdef CONFIG_EXAMPLE_PROV_TRANSPORT_BLE
-    ESP_ERROR_CHECK(esp_event_handler_register(PROTOCOMM_TRANSPORT_BLE_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
-#endif
-    ESP_ERROR_CHECK(esp_event_handler_register(PROTOCOMM_SECURITY_SESSION_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
-    ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler, NULL));
-
-    /* Initialize Wi-Fi including netif with default config */
-    esp_netif_create_default_wifi_sta();
-#ifdef CONFIG_EXAMPLE_PROV_TRANSPORT_SOFTAP
-    esp_netif_create_default_wifi_ap();
-#endif /* CONFIG_EXAMPLE_PROV_TRANSPORT_SOFTAP */
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK(esp_wifi_init(&cfg));
-
-    /* Configuration for the provisioning manager */
-    wifi_prov_mgr_config_t config = {
-#ifdef CONFIG_EXAMPLE_RESET_PROV_MGR_ON_FAILURE
-        .wifi_prov_conn_cfg = {
-            .wifi_conn_attempts = CONFIG_EXAMPLE_PROV_MGR_CONNECTION_CNT,
-        },
-#endif
-    /* What is the Provisioning Scheme that we want ?
-     * wifi_prov_scheme_softap or wifi_prov_scheme_ble */
-#ifdef CONFIG_EXAMPLE_PROV_TRANSPORT_BLE
-        .scheme = wifi_prov_scheme_ble,
-#endif /* CONFIG_EXAMPLE_PROV_TRANSPORT_BLE */
-#ifdef CONFIG_EXAMPLE_PROV_TRANSPORT_SOFTAP
-        .scheme = wifi_prov_scheme_softap,
-#endif /* CONFIG_EXAMPLE_PROV_TRANSPORT_SOFTAP */
-#ifdef CONFIG_EXAMPLE_PROV_ENABLE_APP_CALLBACK
-        .app_event_handler = wifi_prov_event_handler,
-#endif /* EXAMPLE_PROV_ENABLE_APP_CALLBACK */
-
-    /* Any default scheme specific event handler that you would
-     * like to choose. Since our example application requires
-     * neither BT nor BLE, we can choose to release the associated
-     * memory once provisioning is complete, or not needed
-     * (in case when device is already provisioned). Choosing
-     * appropriate scheme specific event handler allows the manager
-     * to take care of this automatically. This can be set to
-     * WIFI_PROV_EVENT_HANDLER_NONE when using wifi_prov_scheme_softap*/
-#ifdef CONFIG_EXAMPLE_PROV_TRANSPORT_BLE
-        .scheme_event_handler = WIFI_PROV_SCHEME_BLE_EVENT_HANDLER_FREE_BTDM
-#endif /* CONFIG_EXAMPLE_PROV_TRANSPORT_BLE */
-#ifdef CONFIG_EXAMPLE_PROV_TRANSPORT_SOFTAP
-                                    .scheme_event_handler = WIFI_PROV_EVENT_HANDLER_NONE
-#endif /* CONFIG_EXAMPLE_PROV_TRANSPORT_SOFTAP */
-    };
-
-    /* Initialize provisioning manager with the
-     * configuration parameters set above */
-    ESP_ERROR_CHECK(wifi_prov_mgr_init(config));
-
-    bool provisioned = false;
-#ifdef CONFIG_EXAMPLE_RESET_PROVISIONED
-    wifi_prov_mgr_reset_provisioning();
-#else
-    /* Let's find out if the device is provisioned */
-    ESP_ERROR_CHECK(wifi_prov_mgr_is_provisioned(&provisioned));
-
-#endif
-    /* If device is not yet provisioned start provisioning service */
-    if (!provisioned)
-    {
-        ESP_LOGI(TAG, "Starting provisioning");
-
-        /* What is the Device Service Name that we want
-         * This translates to :
-         *     - Wi-Fi SSID when scheme is wifi_prov_scheme_softap
-         *     - device name when scheme is wifi_prov_scheme_ble
-         */
-        char service_name[12];
-        get_device_service_name(service_name, sizeof(service_name));
-
-#ifdef CONFIG_EXAMPLE_PROV_SECURITY_VERSION_1
-        /* What is the security level that we want (0, 1, 2):
-         *      - WIFI_PROV_SECURITY_0 is simply plain text communication.
-         *      - WIFI_PROV_SECURITY_1 is secure communication which consists of secure handshake
-         *          using X25519 key exchange and proof of possession (pop) and AES-CTR
-         *          for encryption/decryption of messages.
-         *      - WIFI_PROV_SECURITY_2 SRP6a based authentication and key exchange
-         *        + AES-GCM encryption/decryption of messages
-         */
-        wifi_prov_security_t security = WIFI_PROV_SECURITY_1;
-
-        /* Do we want a proof-of-possession (ignored if Security 0 is selected):
-         *      - this should be a string with length > 0
-         *      - NULL if not used
-         */
-        const char *pop = "abcd1234";
-
-        /* This is the structure for passing security parameters
-         * for the protocomm security 1.
-         */
-        wifi_prov_security1_params_t *sec_params = pop;
-
-        const char *username = NULL;
-
-#elif CONFIG_EXAMPLE_PROV_SECURITY_VERSION_2
-        wifi_prov_security_t security = WIFI_PROV_SECURITY_2;
-        /* The username must be the same one, which has been used in the generation of salt and verifier */
-
-#if CONFIG_EXAMPLE_PROV_SEC2_DEV_MODE
-        /* This pop field represents the password that will be used to generate salt and verifier.
-         * The field is present here in order to generate the QR code containing password.
-         * In production this password field shall not be stored on the device */
-        const char *username = EXAMPLE_PROV_SEC2_USERNAME;
-        const char *pop = EXAMPLE_PROV_SEC2_PWD;
-#elif CONFIG_EXAMPLE_PROV_SEC2_PROD_MODE
-        /* The username and password shall not be embedded in the firmware,
-         * they should be provided to the user by other means.
-         * e.g. QR code sticker */
-        const char *username = NULL;
-        const char *pop = NULL;
-#endif
-        /* This is the structure for passing security parameters
-         * for the protocomm security 2.
-         * If dynamically allocated, sec2_params pointer and its content
-         * must be valid till WIFI_PROV_END event is triggered.
-         */
-        wifi_prov_security2_params_t sec2_params = {};
-
-        ESP_ERROR_CHECK(example_get_sec2_salt(&sec2_params.salt, &sec2_params.salt_len));
-        ESP_ERROR_CHECK(example_get_sec2_verifier(&sec2_params.verifier, &sec2_params.verifier_len));
-
-        wifi_prov_security2_params_t *sec_params = &sec2_params;
-#endif
-        /* What is the service key (could be NULL)
-         * This translates to :
-         *     - Wi-Fi password when scheme is wifi_prov_scheme_softap
-         *          (Minimum expected length: 8, maximum 64 for WPA2-PSK)
-         *     - simply ignored when scheme is wifi_prov_scheme_ble
-         */
-        const char *service_key = NULL;
-
-#ifdef CONFIG_EXAMPLE_PROV_TRANSPORT_BLE
-        /* This step is only useful when scheme is wifi_prov_scheme_ble. This will
-         * set a custom 128 bit UUID which will be included in the BLE advertisement
-         * and will correspond to the primary GATT service that provides provisioning
-         * endpoints as GATT characteristics. Each GATT characteristic will be
-         * formed using the primary service UUID as base, with different auto assigned
-         * 12th and 13th bytes (assume counting starts from 0th byte). The client side
-         * applications must identify the endpoints by reading the User Characteristic
-         * Description descriptor (0x2901) for each characteristic, which contains the
-         * endpoint name of the characteristic */
-        uint8_t custom_service_uuid[] = {
-            /* LSB <---------------------------------------
-             * ---------------------------------------> MSB */
-            0xb4,
-            0xdf,
-            0x5a,
-            0x1c,
-            0x3f,
-            0x6b,
-            0xf4,
-            0xbf,
-            0xea,
-            0x4a,
-            0x82,
-            0x03,
-            0x04,
-            0x90,
-            0x1a,
-            0x02,
-        };
-
-        /* If your build fails with linker errors at this point, then you may have
-         * forgotten to enable the BT stack or BTDM BLE settings in the SDK (e.g. see
-         * the sdkconfig.defaults in the example project) */
-        wifi_prov_scheme_ble_set_service_uuid(custom_service_uuid);
-#endif /* CONFIG_EXAMPLE_PROV_TRANSPORT_BLE */
-
-        /* An optional endpoint that applications can create if they expect to
-         * get some additional custom data during provisioning workflow.
-         * The endpoint name can be anything of your choice.
-         * This call must be made before starting the provisioning.
-         */
-        wifi_prov_mgr_endpoint_create("custom-data");
-
-        /* Do not stop and de-init provisioning even after success,
-         * so that we can restart it later. */
-#ifdef CONFIG_EXAMPLE_REPROVISIONING
-        wifi_prov_mgr_disable_auto_stop(1000);
-#endif
-        /* Start provisioning service */
-        ESP_ERROR_CHECK(wifi_prov_mgr_start_provisioning(security, (const void *)sec_params, service_name, service_key));
-
-        /* The handler for the optional endpoint created above.
-         * This call must be made after starting the provisioning, and only if the endpoint
-         * has already been created above.
-         */
-        wifi_prov_mgr_endpoint_register("custom-data", custom_prov_data_handler, NULL);
-
-        /* Uncomment the following to wait for the provisioning to finish and then release
-         * the resources of the manager. Since in this case de-initialization is triggered
-         * by the default event loop handler, we don't need to call the following */
-        // wifi_prov_mgr_wait();
-        // wifi_prov_mgr_deinit();
-        /* Print QR code for provisioning */
-#ifdef CONFIG_EXAMPLE_PROV_TRANSPORT_BLE
-        wifi_prov_print_qr(service_name, username, pop, PROV_TRANSPORT_BLE);
-#else  /* CONFIG_EXAMPLE_PROV_TRANSPORT_SOFTAP */
-        wifi_prov_print_qr(service_name, username, pop, PROV_TRANSPORT_SOFTAP);
-#endif /* CONFIG_EXAMPLE_PROV_TRANSPORT_BLE */
-    }
-    else
-    {
-        ESP_LOGI(TAG, "Already provisioned, starting Wi-Fi STA");
-
-        /* We don't need the manager as device is already provisioned,
-         * so let's release it's resources */
-        wifi_prov_mgr_deinit();
-
-        ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL));
-        /* Start Wi-Fi station */
-        wifi_init_sta();
-    }
-
-    /* Wait for Wi-Fi connection */
-    xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_EVENT, true, true, portMAX_DELAY);
-
-    /* Start main application now */
-#if CONFIG_EXAMPLE_REPROVISIONING
-    while (1)
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            ESP_LOGI(TAG, "Hello World!");
-            vTaskDelay(1000 / portTICK_PERIOD_MS);
-        }
-
-        /* Resetting provisioning state machine to enable re-provisioning */
-        wifi_prov_mgr_reset_sm_state_for_reprovision();
-
-        /* Wait for Wi-Fi connection */
-        xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_EVENT, true, true, portMAX_DELAY);
-    }
-#else
-    while (1)
-    {
-        ESP_LOGI(TAG, "Hello World!");
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
-#endif
-}
+ #include <stdio.h>
+ #include <unistd.h>
+ #include <sys/lock.h>
+ #include <sys/param.h>
+ #include "freertos/FreeRTOS.h"
+ #include "freertos/task.h"
+ #include "esp_timer.h"
+ #include "esp_lcd_panel_io.h"
+ #include "esp_lcd_panel_vendor.h"
+ #include "esp_lcd_panel_ops.h"
+ #include "driver/gpio.h"
+ #include "driver/spi_master.h"
+ #include "esp_err.h"
+ #include "esp_log.h"
+ #include "lvgl.h"
+ 
+ #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
+ #include "esp_lcd_ili9341.h"
+ #elif CONFIG_EXAMPLE_LCD_CONTROLLER_GC9A01
+ #include "esp_lcd_gc9a01.h"
+ #endif
+ 
+ #if CONFIG_EXAMPLE_LCD_TOUCH_CONTROLLER_STMPE610
+ #include "esp_lcd_touch_stmpe610.h"
+ #endif
+ 
+ static const char *TAG = "example";
+ 
+ // Using SPI2 in the example
+ #define LCD_HOST  SPI2_HOST
+ 
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ //////////////////// Please update the following configuration according to your LCD spec //////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ #define EXAMPLE_LCD_PIXEL_CLOCK_HZ     (20 * 1000 * 1000)
+ #define EXAMPLE_LCD_BK_LIGHT_ON_LEVEL  1
+ #define EXAMPLE_LCD_BK_LIGHT_OFF_LEVEL !EXAMPLE_LCD_BK_LIGHT_ON_LEVEL
+ #define EXAMPLE_PIN_NUM_SCLK           18
+ #define EXAMPLE_PIN_NUM_MOSI           19
+ #define EXAMPLE_PIN_NUM_MISO           21
+ #define EXAMPLE_PIN_NUM_LCD_DC         5
+ #define EXAMPLE_PIN_NUM_LCD_RST        3
+ #define EXAMPLE_PIN_NUM_LCD_CS         4
+ #define EXAMPLE_PIN_NUM_BK_LIGHT       2
+ #define EXAMPLE_PIN_NUM_TOUCH_CS       15
+ 
+ // The pixel number in horizontal and vertical
+ #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
+ #define EXAMPLE_LCD_H_RES              240
+ #define EXAMPLE_LCD_V_RES              320
+ #elif CONFIG_EXAMPLE_LCD_CONTROLLER_GC9A01
+ #define EXAMPLE_LCD_H_RES              240
+ #define EXAMPLE_LCD_V_RES              240
+ #endif
+ // Bit number used to represent command and parameter
+ #define EXAMPLE_LCD_CMD_BITS           8
+ #define EXAMPLE_LCD_PARAM_BITS         8
+ 
+ #define EXAMPLE_LVGL_DRAW_BUF_LINES    20 // number of display lines in each draw buffer
+ #define EXAMPLE_LVGL_TICK_PERIOD_MS    2
+ #define EXAMPLE_LVGL_TASK_MAX_DELAY_MS 500
+ #define EXAMPLE_LVGL_TASK_MIN_DELAY_MS 1
+ #define EXAMPLE_LVGL_TASK_STACK_SIZE   (4 * 1024)
+ #define EXAMPLE_LVGL_TASK_PRIORITY     2
+ 
+ // LVGL library is not thread-safe, this example will call LVGL APIs from different tasks, so use a mutex to protect it
+ static _lock_t lvgl_api_lock;
+ 
+ extern void example_lvgl_demo_ui(lv_disp_t *disp);
+ 
+ static bool example_notify_lvgl_flush_ready(esp_lcd_panel_io_handle_t panel_io, esp_lcd_panel_io_event_data_t *edata, void *user_ctx)
+ {
+     lv_display_t *disp = (lv_display_t *)user_ctx;
+     lv_display_flush_ready(disp);
+     return false;
+ }
+ 
+ /* Rotate display and touch, when rotated screen in LVGL. Called when driver parameters are updated. */
+ static void example_lvgl_port_update_callback(lv_display_t *disp)
+ {
+     esp_lcd_panel_handle_t panel_handle = lv_display_get_user_data(disp);
+     lv_display_rotation_t rotation = lv_display_get_rotation(disp);
+ 
+     switch (rotation) {
+     case LV_DISPLAY_ROTATION_0:
+         // Rotate LCD display
+         esp_lcd_panel_swap_xy(panel_handle, false);
+         esp_lcd_panel_mirror(panel_handle, true, false);
+         break;
+     case LV_DISPLAY_ROTATION_90:
+         // Rotate LCD display
+         esp_lcd_panel_swap_xy(panel_handle, true);
+         esp_lcd_panel_mirror(panel_handle, true, true);
+         break;
+     case LV_DISPLAY_ROTATION_180:
+         // Rotate LCD display
+         esp_lcd_panel_swap_xy(panel_handle, false);
+         esp_lcd_panel_mirror(panel_handle, false, true);
+         break;
+     case LV_DISPLAY_ROTATION_270:
+         // Rotate LCD display
+         esp_lcd_panel_swap_xy(panel_handle, true);
+         esp_lcd_panel_mirror(panel_handle, false, false);
+         break;
+     }
+ }
+ 
+ static void example_lvgl_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map)
+ {
+     example_lvgl_port_update_callback(disp);
+     esp_lcd_panel_handle_t panel_handle = lv_display_get_user_data(disp);
+     int offsetx1 = area->x1;
+     int offsetx2 = area->x2;
+     int offsety1 = area->y1;
+     int offsety2 = area->y2;
+     // because SPI LCD is big-endian, we need to swap the RGB bytes order
+     lv_draw_sw_rgb565_swap(px_map, (offsetx2 + 1 - offsetx1) * (offsety2 + 1 - offsety1));
+     // copy a buffer's content to a specific area of the display
+     esp_lcd_panel_draw_bitmap(panel_handle, offsetx1, offsety1, offsetx2 + 1, offsety2 + 1, px_map);
+ }
+ 
+ #if CONFIG_EXAMPLE_LCD_TOUCH_ENABLED
+ static void example_lvgl_touch_cb(lv_indev_t * indev, lv_indev_data_t * data)
+ {
+     uint16_t touchpad_x[1] = {0};
+     uint16_t touchpad_y[1] = {0};
+     uint8_t touchpad_cnt = 0;
+ 
+     esp_lcd_touch_handle_t touch_pad = lv_indev_get_user_data(indev);
+     esp_lcd_touch_read_data(touch_pad);
+     /* Get coordinates */
+     bool touchpad_pressed = esp_lcd_touch_get_coordinates(touch_pad, touchpad_x, touchpad_y, NULL, &touchpad_cnt, 1);
+ 
+     if (touchpad_pressed && touchpad_cnt > 0) {
+         data->point.x = touchpad_x[0];
+         data->point.y = touchpad_y[0];
+         data->state = LV_INDEV_STATE_PRESSED;
+     } else {
+         data->state = LV_INDEV_STATE_RELEASED;
+     }
+ }
+ #endif
+ 
+ static void example_increase_lvgl_tick(void *arg)
+ {
+     /* Tell LVGL how many milliseconds has elapsed */
+     lv_tick_inc(EXAMPLE_LVGL_TICK_PERIOD_MS);
+ }
+ 
+ static void example_lvgl_port_task(void *arg)
+ {
+     ESP_LOGI(TAG, "Starting LVGL task");
+     uint32_t time_till_next_ms = 0;
+     uint32_t time_threshold_ms = 1000 / CONFIG_FREERTOS_HZ;
+     while (1) {
+         _lock_acquire(&lvgl_api_lock);
+         time_till_next_ms = lv_timer_handler();
+         _lock_release(&lvgl_api_lock);
+         // in case of triggering a task watch dog time out
+         time_till_next_ms = MAX(time_till_next_ms, time_threshold_ms);
+         usleep(1000 * time_till_next_ms);
+     }
+ }
+ 
+ void app_main(void)
+ {
+     ESP_LOGI(TAG, "Turn off LCD backlight");
+     gpio_config_t bk_gpio_config = {
+         .mode = GPIO_MODE_OUTPUT,
+         .pin_bit_mask = 1ULL << EXAMPLE_PIN_NUM_BK_LIGHT
+     };
+     ESP_ERROR_CHECK(gpio_config(&bk_gpio_config));
+ 
+     ESP_LOGI(TAG, "Initialize SPI bus");
+     spi_bus_config_t buscfg = {
+         .sclk_io_num = EXAMPLE_PIN_NUM_SCLK,
+         .mosi_io_num = EXAMPLE_PIN_NUM_MOSI,
+         .miso_io_num = EXAMPLE_PIN_NUM_MISO,
+         .quadwp_io_num = -1,
+         .quadhd_io_num = -1,
+         .max_transfer_sz = EXAMPLE_LCD_H_RES * 80 * sizeof(uint16_t),
+     };
+     ESP_ERROR_CHECK(spi_bus_initialize(LCD_HOST, &buscfg, SPI_DMA_CH_AUTO));
+ 
+     ESP_LOGI(TAG, "Install panel IO");
+     esp_lcd_panel_io_handle_t io_handle = NULL;
+     esp_lcd_panel_io_spi_config_t io_config = {
+         .dc_gpio_num = EXAMPLE_PIN_NUM_LCD_DC,
+         .cs_gpio_num = EXAMPLE_PIN_NUM_LCD_CS,
+         .pclk_hz = EXAMPLE_LCD_PIXEL_CLOCK_HZ,
+         .lcd_cmd_bits = EXAMPLE_LCD_CMD_BITS,
+         .lcd_param_bits = EXAMPLE_LCD_PARAM_BITS,
+         .spi_mode = 0,
+         .trans_queue_depth = 10,
+     };
+     // Attach the LCD to the SPI bus
+     ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)LCD_HOST, &io_config, &io_handle));
+ 
+     esp_lcd_panel_handle_t panel_handle = NULL;
+     esp_lcd_panel_dev_config_t panel_config = {
+         .reset_gpio_num = EXAMPLE_PIN_NUM_LCD_RST,
+         .rgb_ele_order = LCD_RGB_ELEMENT_ORDER_BGR,
+         .bits_per_pixel = 16,
+     };
+ #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
+     ESP_LOGI(TAG, "Install ILI9341 panel driver");
+     ESP_ERROR_CHECK(esp_lcd_new_panel_ili9341(io_handle, &panel_config, &panel_handle));
+ #elif CONFIG_EXAMPLE_LCD_CONTROLLER_GC9A01
+     ESP_LOGI(TAG, "Install GC9A01 panel driver");
+     ESP_ERROR_CHECK(esp_lcd_new_panel_gc9a01(io_handle, &panel_config, &panel_handle));
+ #endif
+ 
+     ESP_ERROR_CHECK(esp_lcd_panel_reset(panel_handle));
+     ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));
+ #if CONFIG_EXAMPLE_LCD_CONTROLLER_GC9A01
+     ESP_ERROR_CHECK(esp_lcd_panel_invert_color(panel_handle, true));
+ #endif
+     ESP_ERROR_CHECK(esp_lcd_panel_mirror(panel_handle, true, false));
+ 
+     // user can flush pre-defined pattern to the screen before we turn on the screen or backlight
+     ESP_ERROR_CHECK(esp_lcd_panel_disp_on_off(panel_handle, true));
+ 
+     ESP_LOGI(TAG, "Turn on LCD backlight");
+     gpio_set_level(EXAMPLE_PIN_NUM_BK_LIGHT, EXAMPLE_LCD_BK_LIGHT_ON_LEVEL);
+ 
+     ESP_LOGI(TAG, "Initialize LVGL library");
+     lv_init();
+ 
+     // create a lvgl display
+     lv_display_t *display = lv_display_create(EXAMPLE_LCD_H_RES, EXAMPLE_LCD_V_RES);
+ 
+     // alloc draw buffers used by LVGL
+     // it's recommended to choose the size of the draw buffer(s) to be at least 1/10 screen sized
+     size_t draw_buffer_sz = EXAMPLE_LCD_H_RES * EXAMPLE_LVGL_DRAW_BUF_LINES * sizeof(lv_color16_t);
+ 
+     void *buf1 = spi_bus_dma_memory_alloc(LCD_HOST, draw_buffer_sz, 0);
+     assert(buf1);
+     void *buf2 = spi_bus_dma_memory_alloc(LCD_HOST, draw_buffer_sz, 0);
+     assert(buf2);
+     // initialize LVGL draw buffers
+     lv_display_set_buffers(display, buf1, buf2, draw_buffer_sz, LV_DISPLAY_RENDER_MODE_PARTIAL);
+     // associate the mipi panel handle to the display
+     lv_display_set_user_data(display, panel_handle);
+     // set color depth
+     lv_display_set_color_format(display, LV_COLOR_FORMAT_RGB565);
+     // set the callback which can copy the rendered image to an area of the display
+     lv_display_set_flush_cb(display, example_lvgl_flush_cb);
+ 
+     ESP_LOGI(TAG, "Install LVGL tick timer");
+     // Tick interface for LVGL (using esp_timer to generate 2ms periodic event)
+     const esp_timer_create_args_t lvgl_tick_timer_args = {
+         .callback = &example_increase_lvgl_tick,
+         .name = "lvgl_tick"
+     };
+     esp_timer_handle_t lvgl_tick_timer = NULL;
+     ESP_ERROR_CHECK(esp_timer_create(&lvgl_tick_timer_args, &lvgl_tick_timer));
+     ESP_ERROR_CHECK(esp_timer_start_periodic(lvgl_tick_timer, EXAMPLE_LVGL_TICK_PERIOD_MS * 1000));
+ 
+     ESP_LOGI(TAG, "Register io panel event callback for LVGL flush ready notification");
+     const esp_lcd_panel_io_callbacks_t cbs = {
+         .on_color_trans_done = example_notify_lvgl_flush_ready,
+     };
+     /* Register done callback */
+     ESP_ERROR_CHECK(esp_lcd_panel_io_register_event_callbacks(io_handle, &cbs, display));
+ 
+ #if CONFIG_EXAMPLE_LCD_TOUCH_ENABLED
+     esp_lcd_panel_io_handle_t tp_io_handle = NULL;
+     esp_lcd_panel_io_spi_config_t tp_io_config = ESP_LCD_TOUCH_IO_SPI_STMPE610_CONFIG(EXAMPLE_PIN_NUM_TOUCH_CS);
+     // Attach the TOUCH to the SPI bus
+     ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)LCD_HOST, &tp_io_config, &tp_io_handle));
+ 
+     esp_lcd_touch_config_t tp_cfg = {
+         .x_max = EXAMPLE_LCD_H_RES,
+         .y_max = EXAMPLE_LCD_V_RES,
+         .rst_gpio_num = -1,
+         .int_gpio_num = -1,
+         .flags = {
+             .swap_xy = 0,
+             .mirror_x = 0,
+             .mirror_y = 0,
+         },
+     };
+     esp_lcd_touch_handle_t tp = NULL;
+ 
+ #if CONFIG_EXAMPLE_LCD_TOUCH_CONTROLLER_STMPE610
+     ESP_LOGI(TAG, "Initialize touch controller STMPE610");
+     ESP_ERROR_CHECK(esp_lcd_touch_new_spi_stmpe610(tp_io_handle, &tp_cfg, &tp));
+ #endif // CONFIG_EXAMPLE_LCD_TOUCH_CONTROLLER_STMPE610
+ 
+     static lv_indev_t *indev;
+     indev = lv_indev_create();  // Input device driver (Touch)
+     lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
+     lv_indev_set_display(indev, display);
+     lv_indev_set_user_data(indev, tp);
+     lv_indev_set_read_cb(indev, example_lvgl_touch_cb);
+ #endif
+ 
+     ESP_LOGI(TAG, "Create LVGL task");
+     xTaskCreate(example_lvgl_port_task, "LVGL", EXAMPLE_LVGL_TASK_STACK_SIZE, NULL, EXAMPLE_LVGL_TASK_PRIORITY, NULL);
+ 
+     ESP_LOGI(TAG, "Display LVGL Meter Widget");
+     // Lock the mutex due to the LVGL APIs are not thread-safe
+     _lock_acquire(&lvgl_api_lock);
+     example_lvgl_demo_ui(display);
+     _lock_release(&lvgl_api_lock);
+ }
