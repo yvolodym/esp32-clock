@@ -19,7 +19,8 @@
  #include "esp_err.h"
  #include "esp_log.h"
  #include "lvgl.h"
- 
+ #include "driver/spi_common.h"
+
  #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
  #include "esp_lcd_ili9341.h"
  #elif CONFIG_EXAMPLE_LCD_CONTROLLER_GC9A01
@@ -239,9 +240,9 @@
      // it's recommended to choose the size of the draw buffer(s) to be at least 1/10 screen sized
      size_t draw_buffer_sz = EXAMPLE_LCD_H_RES * EXAMPLE_LVGL_DRAW_BUF_LINES * sizeof(lv_color16_t);
  
-     void *buf1 = spi_bus_dma_memory_alloc(LCD_HOST, draw_buffer_sz, 0);
+     void *buf1 = heap_caps_calloc(LCD_HOST, draw_buffer_sz, 0);
      assert(buf1);
-     void *buf2 = spi_bus_dma_memory_alloc(LCD_HOST, draw_buffer_sz, 0);
+     void *buf2 = heap_caps_calloc(LCD_HOST, draw_buffer_sz, 0);
      assert(buf2);
      // initialize LVGL draw buffers
      lv_display_set_buffers(display, buf1, buf2, draw_buffer_sz, LV_DISPLAY_RENDER_MODE_PARTIAL);
