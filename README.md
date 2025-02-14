@@ -30,7 +30,8 @@ This project is intended as training for esp8266. The aim of this project is to 
 * https://github.com/espressif/esp-idf/blob/master/examples/provisioning/wifi_prov_mgr/README.md
 
 
-### GIT Submodules
+### Flash ESP32 8266 chip
 ```bash
-git submodule update --init --recursive
+python -m esptool --chip esp8266 -b 460800 --before default_reset --after hard_reset write_flash "@flash_args"
 ```
+from "esp32-clock\build" directory
