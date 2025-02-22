@@ -84,8 +84,8 @@ void app_main() {
 // SPI-Sendefunktionen
 void gc9a01_send_command(uint8_t cmd) {
     gpio_set_level(PIN_NUM_DC, 0);  // DC auf LOW für Befehle
-    oled_dc_level = cmd;
-    spi_transfer(cmd);
+    //oled_dc_level = cmd;
+    //spi_transfer(cmd);
 }
 
 void gc9a01_send_data(uint8_t *data, int len) {
@@ -94,19 +94,26 @@ void gc9a01_send_data(uint8_t *data, int len) {
     spi_trans_t trans = {0};
     trans.mosi = &buf;
     trans.bits.mosi = 8;
-    oled_set_dc(0);
+    //oled_set_dc(0);
     
     spi_trans(SPI_HOST, &trans);
 }
 
 // Display-Initialisierung
 void gc9a01_init() {
+    spi_interface_t interface = {};
+    spi_intr_enable_t intr_enable = {};
+    //spi_event_callback_t *event_callback = {};
+    spi_mode_t node = SPI_MASTER_MODE;
+    spi_clk_div_t clk_div = SPI_8MHz_DIV;
+
     // SPI initialisieren
     spi_config_t spi_config = {
-        .miso_io_num = PIN_NUM_MISO,
-        .mosi_io_num = PIN_NUM_MOSI,
-        .sclk_io_num = PIN_NUM_CLK,
-        .max_transfer_sz = 4094,
+        .interface = interface,
+        .intr_enable = intr_enable,
+        //.event_cb = event_callback,
+        .mode = node,
+        .clk_div = clk_div
     };
     spi_init(SPI_HOST, &spi_config);
 
