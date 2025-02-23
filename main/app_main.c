@@ -11,8 +11,8 @@
 
 // Pin-Definitionen für das GC9A01-Display
 #define PIN_NUM_MISO  -1  // Nicht verwendet
-#define PIN_NUM_MOSI  13  // GPIO13 (D7)
-#define PIN_NUM_CLK   14  // GPIO14 (D5)
+#define PIN_NUM_SDA  13  // GPIO13 (D7)
+#define PIN_NUM_SCL   14  // GPIO14 (D5)
 #define PIN_NUM_CS    15  // GPIO15 (D8)
 #define PIN_NUM_DC    2   // GPIO2  (D4)
 #define PIN_NUM_RST   4   // GPIO4  (D2)
@@ -83,55 +83,62 @@ void app_main() {
 
 // SPI-Sendefunktionen
 void gc9a01_send_command(uint8_t cmd) {
+    uint16_t cmd_value = cmd;
+    spi_trans_t trans = {
+        .cmd = &cmd_value,
+        .bits.cmd = 8,
+    };
     gpio_set_level(PIN_NUM_DC, 0);  // DC auf LOW für Befehle
-    //oled_dc_level = cmd;
-    //spi_transfer(cmd);
+    spi_trans(SPI_HOST, &trans);
 }
 
 void gc9a01_send_data(uint8_t *data, int len) {
+    uint32_t buf[len];  // Temporärer Puffer als uint32_t-Array
+
+    for (int i = 0; i < len; i++) {
+        buf[i] = data[i];  // Konvertiere uint8_t zu uint32_t
+    }
+
+    spi_trans_t trans = {
+        .mosi = buf,         // Übergebe den uint32_t-Puffer
+        .bits.mosi = len * 8 // Setze die Bit-Länge
+    };
+
     gpio_set_level(PIN_NUM_DC, 1);  // DC auf HIGH für Daten
-    uint32_t buf = *data << 24; // In order to improve the transmission efficiency, it is recommended that the external incoming data is (uint32_t *) type data, do not use other type data.
-    spi_trans_t trans = {0};
-    trans.mosi = &buf;
-    trans.bits.mosi = 8;
-    //oled_set_dc(0);
-    
     spi_trans(SPI_HOST, &trans);
 }
 
 // Display-Initialisierung
 void gc9a01_init() {
-    spi_interface_t interface = {};
-    spi_intr_enable_t intr_enable = {};
-    //spi_event_callback_t *event_callback = {};
-    spi_mode_t node = SPI_MASTER_MODE;
-    spi_clk_div_t clk_div = SPI_8MHz_DIV;
-
-    // SPI initialisieren
     spi_config_t spi_config = {
-        .interface = interface,
-        .intr_enable = intr_enable,
-        //.event_cb = event_callback,
-        .mode = node,
-        .clk_div = clk_div
+        .interface.val = SPI_DEFAULT_INTERFACE,
+        .mode = SPI_MASTER_MODE,
+        .clk_div = SPI_8MHz_DIV,
     };
     spi_init(SPI_HOST, &spi_config);
 
-    // GPIOs konfigurieren
     gpio_set_direction(PIN_NUM_CS, GPIO_MODE_OUTPUT);
     gpio_set_direction(PIN_NUM_DC, GPIO_MODE_OUTPUT);
     gpio_set_direction(PIN_NUM_RST, GPIO_MODE_OUTPUT);
 
-    // Display zurücksetzen
     gpio_set_level(PIN_NUM_RST, 0);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     gpio_set_level(PIN_NUM_RST, 1);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    // Initialisierungsbefehle senden
-    gc9a01_send_command(0x01);  // Software Reset
+    gc9a01_send_command(0x01);
     vTaskDelay(100 / portTICK_PERIOD_MS);
-    // Weitere Initialisierungsbefehle hier...
+    gc9a01_send_command(0x11);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    uint8_t pixel_format = 0x05;
+    gc9a01_send_command(0x3A);
+    gc9a01_send_data(&pixel_format, 1);
+
+    gc9a01_send_command(0x29);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    gc9a01_fill_screen(GC9A01_COLOR_BLACK);
 }
 
 // Zeichne einen Pixel
