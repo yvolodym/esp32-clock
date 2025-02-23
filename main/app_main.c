@@ -11,11 +11,11 @@
 
 // Pin-Definitionen für das GC9A01-Display
 #define PIN_NUM_MISO  -1  // Nicht verwendet
-#define PIN_NUM_SDA  13  // GPIO13 (D7)
-#define PIN_NUM_SCL   14  // GPIO14 (D5)
-#define PIN_NUM_CS    15  // GPIO15 (D8)
-#define PIN_NUM_DC    2   // GPIO2  (D4)
-#define PIN_NUM_RST   4   // GPIO4  (D2)
+#define PIN_NUM_MOSI  GPIO_NUM_13  // GPIO13 (D7) SDA 
+#define PIN_NUM_CLK   GPIO_NUM_14  // GPIO14 (D5) SCL
+#define PIN_NUM_CS    GPIO_NUM_15  // GPIO15 (D8)
+#define PIN_NUM_DC    GPIO_NUM_2   // GPIO2  (D4)
+#define PIN_NUM_RST   GPIO_NUM_4   // GPIO4  (D2)
 
 // Display-Auflösung
 #define GC9A01_WIDTH  240
@@ -115,6 +115,7 @@ void gc9a01_init() {
         .mode = SPI_MASTER_MODE,
         .clk_div = SPI_8MHz_DIV,
     };
+
     spi_init(SPI_HOST, &spi_config);
 
     gpio_set_direction(PIN_NUM_CS, GPIO_MODE_OUTPUT);
@@ -138,7 +139,7 @@ void gc9a01_init() {
     gc9a01_send_command(0x29);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    gc9a01_fill_screen(GC9A01_COLOR_BLACK);
+    gc9a01_fill_screen(GC9A01_COLOR_WHITE);
 }
 
 // Zeichne einen Pixel
