@@ -1,3 +1,8 @@
+/**
+ * https://github.com/espressif/ESP8266_RTOS_SDK/blob/master/examples/peripherals/spi_oled/main/spi_oled_example_main.c
+ */
+
+
 #include <stdio.h>
 #include "esp_system.h"
 #include "esp_log.h"
@@ -18,6 +23,8 @@
 #define PIN_NUM_CS    GPIO_NUM_15  // GPIO15 (D8)
 #define PIN_NUM_DC    GPIO_NUM_2   // GPIO2  (D4)
 #define PIN_NUM_RST   GPIO_NUM_4   // GPIO4  (D2)
+
+#define OLED_PIN_SEL  (1ULL << PIN_NUM_DC) | (1ULL << PIN_NUM_RST)
 
 // Display-Auflösung
 #define GC9A01_WIDTH  240
@@ -46,6 +53,7 @@ esp_err_t oled_set_pos(uint8_t x_start, uint8_t y_start);
 void IRAM_ATTR spi_event_callback(int event, void *arg);
 esp_err_t oled_init();
 esp_err_t oled_rst();
+esp_err_t gc9a01_gpio_init();
 
 static uint8_t oled_dc_level = 0;
 
@@ -169,6 +177,19 @@ esp_err_t oled_set_pos(uint8_t x_start, uint8_t y_start) {
     gc9a01_send_command(0xb0 + y_start);
     gc9a01_send_command(((x_start & 0xf0) >> 4) | 0x10);
     gc9a01_send_command((x_start & 0x0f) | 0x01);
+    return ESP_OK;
+}
+
+esp_err_t gc9a01_gpio_init() {
+    ESP_LOGI(TAG, "init gpio");
+    gpio_config_t io_conf = {
+      .intr_type = GPIO_INTR_DISABLE,
+      .mode = GPIO_MODE_OUTPUT,
+      .pin_bit_mask = OLED_PIN_SEL,
+      .pull_down_en = 0,
+      .pull_up_en = 1
+    };
+    gpio_config(&io_conf);
     return ESP_OK;
 }
 
