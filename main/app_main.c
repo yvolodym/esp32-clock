@@ -6,6 +6,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include <math.h>
+#include "esp_log.h"
+#include "esp_libc.h"
 
 #define TAG "GC9A01_CLOCK"
 
@@ -31,17 +33,27 @@
 #define SPI_CLK_SPEED_HZ 40000000  // 40 MHz
 
 // Funktionen für das GC9A01-Display
-void gc9a01_send_command(uint8_t cmd);
+esp_err_t gc9a01_send_command(uint8_t cmd);
 void gc9a01_send_data(uint8_t *data, int len);
 void gc9a01_init();
 void gc9a01_draw_pixel(int x, int y, uint16_t color);
 void gc9a01_draw_line(int x0, int y0, int x1, int y1, uint16_t color);
 void gc9a01_draw_circle(int x, int y, int radius, uint16_t color);
 void gc9a01_fill_screen(uint16_t color);
+void printChipInfo();
+esp_err_t oled_clear(uint8_t data);
+esp_err_t oled_set_pos(uint8_t x_start, uint8_t y_start);
+
+static uint8_t oled_dc_level = 0;
 
 void app_main() {
+    uint8_t count = 0;
     // Initialisiere das GC9A01-Display
     gc9a01_init();
+
+    ESP_LOGI(TAG, "init hspi");
+    printf("\n" "Start programm.\n");
+    printChipInfo();
 
     // Zeichne das Ziffernblatt
     int x = GC9A01_WIDTH / 2;
@@ -63,6 +75,7 @@ void app_main() {
         int hours = 10;
         int minutes = 45;
         int seconds = 0;
+        oled_clear(count++);
 
         // Zeichne die Uhrzeiger
         gc9a01_draw_line(x, y, x + 50 * sin((hours % 12 * 30 + minutes / 2) * 3.14159 / 180),
@@ -81,15 +94,28 @@ void app_main() {
     }
 }
 
+void printChipInfo() {
+    esp_chip_info_t chip_info;
+    esp_chip_info(&chip_info);
+    printf("This is ESP8266 chip with %d CPU cores, WiFi, ",
+            chip_info.cores);
+}
+
+static esp_err_t oled_set_dc(uint8_t dc) {
+    oled_dc_level = dc;
+    return ESP_OK;
+}
+
 // SPI-Sendefunktionen
-void gc9a01_send_command(uint8_t cmd) {
-    uint16_t cmd_value = cmd;
+esp_err_t gc9a01_send_command(uint8_t cmd) {
+    uint32_t buf = cmd << 24; // In order to improve the transmission efficiency, it is recommended that the external incoming data is (uint32_t *) type data, do not use other type data.
     spi_trans_t trans = {
-        .cmd = &cmd_value,
-        .bits.cmd = 8,
+       .mosi = &buf,
+       .bits.mosi = 8
     };
-    gpio_set_level(PIN_NUM_DC, 0);  // DC auf LOW für Befehle
-    spi_trans(SPI_HOST, &trans);
+    oled_set_dc(0);
+    spi_trans(HSPI_HOST, &trans);
+    return ESP_OK;
 }
 
 void gc9a01_send_data(uint8_t *data, int len) {
@@ -106,6 +132,36 @@ void gc9a01_send_data(uint8_t *data, int len) {
 
     gpio_set_level(PIN_NUM_DC, 1);  // DC auf HIGH für Daten
     spi_trans(SPI_HOST, &trans);
+}
+
+
+esp_err_t oled_clear(uint8_t data) {
+    uint8_t x;
+    uint32_t buf[16];
+    spi_trans_t trans = {0};
+    trans.mosi = buf;
+    trans.bits.mosi = 64 * 8;
+
+    for (x = 0; x < 16; x++) {
+        buf[x] = data << 24 | data << 16 | data << 8 | data;
+    }
+
+    // SPI transfers 64 bytes at a time, transmits twice, increasing the screen refresh rate
+    for (x = 0; x < 8; x++) {
+        oled_set_pos(0, x);
+        oled_set_dc(1);
+        spi_trans(HSPI_HOST, &trans);
+        spi_trans(HSPI_HOST, &trans);
+    }
+
+    return ESP_OK;
+}
+
+esp_err_t oled_set_pos(uint8_t x_start, uint8_t y_start) {
+    gc9a01_send_command(0xb0 + y_start);
+    gc9a01_send_command(((x_start & 0xf0) >> 4) | 0x10);
+    gc9a01_send_command((x_start & 0x0f) | 0x01);
+    return ESP_OK;
 }
 
 // Display-Initialisierung
