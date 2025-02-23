@@ -43,8 +43,16 @@ void gc9a01_fill_screen(uint16_t color);
 void printChipInfo();
 esp_err_t oled_clear(uint8_t data);
 esp_err_t oled_set_pos(uint8_t x_start, uint8_t y_start);
+void IRAM_ATTR spi_event_callback(int event, void *arg);
+esp_err_t oled_init();
+esp_err_t oled_rst();
 
 static uint8_t oled_dc_level = 0;
+
+static esp_err_t oled_delay_ms(uint32_t time) {
+    vTaskDelay(time / portTICK_RATE_MS);
+    return ESP_OK;
+}
 
 void app_main() {
     uint8_t count = 0;
@@ -168,8 +176,23 @@ esp_err_t oled_set_pos(uint8_t x_start, uint8_t y_start) {
 void gc9a01_init() {
     spi_config_t spi_config = {
         .interface.val = SPI_DEFAULT_INTERFACE,
+        // Load default interrupt enable
+        // TRANS_DONE: true, WRITE_STATUS: false, READ_STATUS: false, WRITE_BUFFER: false, READ_BUFFER: false
+        .intr_enable.val = SPI_MASTER_DEFAULT_INTR_ENABLE,
+        // Cancel hardware cs
+        .interface.cs_en = 0,
+        // MISO pin is used for DC
+        .interface.miso_en = 0,
+        // CPOL: 1, CPHA: 1
+        .interface.cpol = 1,
+        .interface.cpha = 1,
+        // Set SPI to master mode
+        // 8266 Only support half-duplex
         .mode = SPI_MASTER_MODE,
-        .clk_div = SPI_8MHz_DIV,
+        // Set the SPI clock frequency division factor
+        .clk_div = SPI_10MHz_DIV,
+        // Register SPI event callback function
+        .event_cb = spi_event_callback
     };
 
     spi_init(SPI_HOST, &spi_config);
@@ -196,6 +219,71 @@ void gc9a01_init() {
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
     gc9a01_fill_screen(GC9A01_COLOR_WHITE);
+    oled_init();
+}
+
+esp_err_t oled_rst() {
+    gpio_set_level(PIN_NUM_RST, 0);
+    oled_delay_ms(200);
+    gpio_set_level(PIN_NUM_RST, 1);
+    oled_delay_ms(100);
+    return ESP_OK;
+}
+
+esp_err_t oled_init() {
+    oled_rst(); // Reset OLED
+    gc9a01_send_command(0xAE);    // Set Display ON/OFF (AEh/AFh)
+    gc9a01_send_command(0x00);    // Set Lower Column Start Address for Page Addressing Mode (00h~0Fh)
+    gc9a01_send_command(0x10);    // Set Higher Column Start Address for Page Addressing Mode (10h~1Fh)
+    gc9a01_send_command(0x40);    // Set Display Start Line (40h~7Fh)
+    gc9a01_send_command(0x81);    // Set Contrast Control for BANK0 (81h)
+    gc9a01_send_command(0xCF);    //
+    gc9a01_send_command(0xA1);    // Set Segment Re-map (A0h/A1h)
+    gc9a01_send_command(0xC8);    // Set COM Output Scan Direction (C0h/C8h)
+    gc9a01_send_command(0xA6);    // Set Normal/Inverse Display (A6h/A7h)
+    gc9a01_send_command(0xA8);    // Set Multiplex Ratio (A8h)
+    gc9a01_send_command(0x3F);    //
+    gc9a01_send_command(0xD3);    // Set Display Offset (D3h)
+    gc9a01_send_command(0x00);    // Set Lower Column Start Address for Page Addressing Mode (00h~0Fh)
+    gc9a01_send_command(0xD5);    // Set Display Clock Divide Ratio/ Oscillator Frequency (D5h)
+    gc9a01_send_command(0x80);    //
+    gc9a01_send_command(0xD9);    // Set Pre-charge Period (D9h)
+    gc9a01_send_command(0xF1);    //
+    gc9a01_send_command(0xDA);    // Set COM Pins Hardware Configuration (DAh)
+    gc9a01_send_command(0x12);    // Set Higher Column Start Address for Page Addressing Mode (10h~1Fh)
+    gc9a01_send_command(0xDB);    // Set VCOMH  Deselect Level (DBh)
+    gc9a01_send_command(0x40);    // Set Display Start Line (40h~7Fh)
+    gc9a01_send_command(0x20);    // Set Memory Addressing Mode (20h)
+    gc9a01_send_command(0x02);    // Set Lower Column Start Address for Page Addressing Mode (00h~0Fh)
+    gc9a01_send_command(0x8D);    //
+    gc9a01_send_command(0x14);    // Set Higher Column Start Address for Page Addressing Mode (10h~1Fh)
+    gc9a01_send_command(0xA4);    // Entire Display ON (A4h/A5h)
+    gc9a01_send_command(0xA6);    // Set Normal/Inverse Display (A6h/A7h)
+    gc9a01_send_command(0xAF);    // Set Display ON/OFF (AEh/AFh)
+    return ESP_OK;
+}
+
+void IRAM_ATTR spi_event_callback(int event, void *arg) {
+    switch (event) {
+        case SPI_INIT_EVENT: {
+
+        }
+        break;
+
+        case SPI_TRANS_START_EVENT: {
+            gpio_set_level(PIN_NUM_DC, oled_dc_level);
+        }
+        break;
+
+        case SPI_TRANS_DONE_EVENT: {
+
+        }
+        break;
+
+        case SPI_DEINIT_EVENT: {
+        }
+        break;
+    }
 }
 
 // Zeichne einen Pixel
