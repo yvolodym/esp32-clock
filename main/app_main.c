@@ -4,13 +4,12 @@
 
 
 #include <stdio.h>
+#include <math.h>
 #include "esp_system.h"
-#include "esp_log.h"
 #include "driver/gpio.h"
 #include "driver/spi.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include <math.h>
 #include "esp_log.h"
 #include "esp_libc.h"
 
@@ -21,10 +20,10 @@
 #define PIN_NUM_MOSI  GPIO_NUM_13  // GPIO13 (D7) SDA 
 #define PIN_NUM_CLK   GPIO_NUM_14  // GPIO14 (D5) SCL
 #define PIN_NUM_CS    GPIO_NUM_15  // GPIO15 (D8)
-#define PIN_NUM_DC    GPIO_NUM_2   // GPIO2  (D4)
-#define PIN_NUM_RST   GPIO_NUM_4   // GPIO4  (D2)
+#define PIN_NUM_DC    GPIO_NUM_4   // GPIO4  (D4)
 
-#define OLED_PIN_SEL  (1ULL << PIN_NUM_DC) | (1ULL << PIN_NUM_RST)
+
+#define OLED_PIN_SEL  (1ULL << PIN_NUM_DC)
 
 // Display-Auflösung
 #define GC9A01_WIDTH  240
@@ -52,7 +51,6 @@ esp_err_t oled_clear(uint8_t data);
 esp_err_t oled_set_pos(uint8_t x_start, uint8_t y_start);
 void IRAM_ATTR spi_event_callback(int event, void *arg);
 esp_err_t oled_init();
-esp_err_t oled_rst();
 esp_err_t gc9a01_gpio_init();
 
 static uint8_t oled_dc_level = 0;
@@ -220,11 +218,9 @@ void gc9a01_init() {
 
     gpio_set_direction(PIN_NUM_CS, GPIO_MODE_OUTPUT);
     gpio_set_direction(PIN_NUM_DC, GPIO_MODE_OUTPUT);
-    gpio_set_direction(PIN_NUM_RST, GPIO_MODE_OUTPUT);
 
-    gpio_set_level(PIN_NUM_RST, 0);
     vTaskDelay(100 / portTICK_PERIOD_MS);
-    gpio_set_level(PIN_NUM_RST, 1);
+    
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
     gc9a01_send_command(0x01);
@@ -243,16 +239,8 @@ void gc9a01_init() {
     oled_init();
 }
 
-esp_err_t oled_rst() {
-    gpio_set_level(PIN_NUM_RST, 0);
-    oled_delay_ms(200);
-    gpio_set_level(PIN_NUM_RST, 1);
-    oled_delay_ms(100);
-    return ESP_OK;
-}
-
 esp_err_t oled_init() {
-    oled_rst(); // Reset OLED
+
     gc9a01_send_command(0xAE);    // Set Display ON/OFF (AEh/AFh)
     gc9a01_send_command(0x00);    // Set Lower Column Start Address for Page Addressing Mode (00h~0Fh)
     gc9a01_send_command(0x10);    // Set Higher Column Start Address for Page Addressing Mode (10h~1Fh)

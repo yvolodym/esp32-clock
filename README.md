@@ -9,6 +9,7 @@ This project is intended as training for esp8266. The aim of this project is to 
 
 ### Software
 * https://dronebotworkshop.com/gc9a01/
+* https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
 
 ### Schematik
 * https://embeddedprojects101.com/design-a-battery-powered-stm32-board-with-usb/
