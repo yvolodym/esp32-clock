@@ -10,6 +10,8 @@
 #include "driver/spi.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "esp8266/gpio_struct.h"
+#include "esp8266/spi_struct.h"
 #include "esp_log.h"
 #include "esp_libc.h"
 
@@ -60,14 +62,14 @@ static esp_err_t oled_delay_ms(uint32_t time) {
     return ESP_OK;
 }
 
-void app_main() {
-    uint8_t count = 0;
-    // Initialisiere das GC9A01-Display
-    gc9a01_init();
-
+void app_main(void) {
     ESP_LOGI(TAG, "init hspi");
     printf("\n" "Start programm.\n");
     printChipInfo();
+
+    uint8_t count = 0;
+    // Initialisiere das GC9A01-Display
+    gc9a01_init();
 
     // Zeichne das Ziffernblatt
     int x = GC9A01_WIDTH / 2;
@@ -127,7 +129,7 @@ esp_err_t gc9a01_send_command(uint8_t cmd) {
        .bits.mosi = 8
     };
     oled_set_dc(0);
-    spi_trans(HSPI_HOST, &trans);
+    spi_trans(SPI_HOST, &trans);
     return ESP_OK;
 }
 
