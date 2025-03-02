@@ -111,8 +111,7 @@ void app_main() {
 void printChipInfo() {
     esp_chip_info_t chip_info;
     esp_chip_info(&chip_info);
-    printf("This is ESP8266 chip with %d CPU cores, WiFi, ",
-            chip_info.cores);
+    printf("This is ESP8266 chip with %d CPU cores, WiFi, ", chip_info.cores);
 }
 
 static esp_err_t oled_set_dc(uint8_t dc) {

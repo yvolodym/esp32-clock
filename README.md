@@ -31,3 +31,7 @@ This project is intended as training for esp8266. The aim of this project is to 
 python -m esptool --chip esp8266 -b 460800 --before default_reset --after hard_reset write_flash "@flash_args"
 ```
 from "esp32-clock\build" directory
+
+### RTOS
+* https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/index.html
+* https://www.espressif.com/en/support/documents/technical-documents?keys=&field_type_tid%5B%5D=14
