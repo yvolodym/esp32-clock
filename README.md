@@ -6,6 +6,8 @@ This project is intended as training for esp8266. The aim of this project is to 
 * https://esp32-server.de/schaltplan/
 * https://jlcpcb.com/blog/guide-to-multiboard-pcb-design
 * https://tttapa.github.io/ESP8266/Chap02%20-%20Hardware.html
+* https://docs.lvgl.io/master/intro/introduction.html
+* 
 
 ### Software
 * https://github.com/espressif/esp-idf/blob/master/examples/peripherals/lcd/spi_lcd_touch/README.md
@@ -28,10 +30,3 @@ This project is intended as training for esp8266. The aim of this project is to 
 ### WIFI Provisioning
 * https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/provisioning/wifi_provisioning.html#
 * https://github.com/espressif/esp-idf/blob/master/examples/provisioning/wifi_prov_mgr/README.md
-
-
-### Flash ESP32 8266 chip
-```bash
-python -m esptool --chip esp8266 -b 460800 --before default_reset --after hard_reset write_flash "@flash_args"
-```
-from "esp32-clock\build" directory

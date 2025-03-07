@@ -35,14 +35,12 @@
  #define EXAMPLE_LCD_PIXEL_CLOCK_HZ     (20 * 1000 * 1000)
  #define EXAMPLE_LCD_BK_LIGHT_ON_LEVEL  1
  #define EXAMPLE_LCD_BK_LIGHT_OFF_LEVEL !EXAMPLE_LCD_BK_LIGHT_ON_LEVEL
- #define EXAMPLE_PIN_NUM_SCLK           18
- #define EXAMPLE_PIN_NUM_MOSI           23
- #define EXAMPLE_PIN_NUM_MISO           21
+ #define EXAMPLE_PIN_NUM_SCLK           19  // SCL
+ #define EXAMPLE_PIN_NUM_MOSI           23  // SDA
+ //#define EXAMPLE_PIN_NUM_MISO           21
  #define EXAMPLE_PIN_NUM_LCD_DC         15
- #define EXAMPLE_PIN_NUM_LCD_RST        2
+ #define EXAMPLE_PIN_NUM_LCD_RST        21
  #define EXAMPLE_PIN_NUM_LCD_CS         5
- #define EXAMPLE_PIN_NUM_BK_LIGHT       2
- #define EXAMPLE_PIN_NUM_TOUCH_CS       15
  
  #define EXAMPLE_LCD_H_RES              240
  #define EXAMPLE_LCD_V_RES              240
@@ -159,18 +157,18 @@
  
  void app_main(void)
  {
-     ESP_LOGI(TAG, "Turn off LCD backlight");
+/*     ESP_LOGI(TAG, "Turn off LCD backlight");
      gpio_config_t bk_gpio_config = {
          .mode = GPIO_MODE_OUTPUT,
          .pin_bit_mask = 1ULL << EXAMPLE_PIN_NUM_BK_LIGHT
      };
-     ESP_ERROR_CHECK(gpio_config(&bk_gpio_config));
+     ESP_ERROR_CHECK(gpio_config(&bk_gpio_config));*/
  
      ESP_LOGI(TAG, "Initialize SPI bus");
      spi_bus_config_t buscfg = {
          .sclk_io_num = EXAMPLE_PIN_NUM_SCLK,
          .mosi_io_num = EXAMPLE_PIN_NUM_MOSI,
-         .miso_io_num = EXAMPLE_PIN_NUM_MISO,
+         .miso_io_num = -1,
          .quadwp_io_num = -1,
          .quadhd_io_num = -1,
          .max_transfer_sz = EXAMPLE_LCD_H_RES * 80 * sizeof(uint16_t),
@@ -208,8 +206,8 @@
      // user can flush pre-defined pattern to the screen before we turn on the screen or backlight
      ESP_ERROR_CHECK(esp_lcd_panel_disp_on_off(panel_handle, true));
  
-     ESP_LOGI(TAG, "Turn on LCD backlight");
-     gpio_set_level(EXAMPLE_PIN_NUM_BK_LIGHT, EXAMPLE_LCD_BK_LIGHT_ON_LEVEL);
+     //ESP_LOGI(TAG, "Turn on LCD backlight");
+     //gpio_set_level(EXAMPLE_PIN_NUM_BK_LIGHT, EXAMPLE_LCD_BK_LIGHT_ON_LEVEL);
  
      ESP_LOGI(TAG, "Initialize LVGL library");
      lv_init();
