@@ -179,7 +179,9 @@
      // create a lvgl display
      lv_display_t *display = lv_display_create(EXAMPLE_LCD_H_RES, EXAMPLE_LCD_V_RES);
      
-     lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x003a57), LV_PART_MAIN);
+     example_lvgl_demo_ui(display);
+
+     //lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x003a57), LV_PART_MAIN);
      
 /*
      // alloc draw buffers used by LVGL
