@@ -21,15 +21,8 @@
  #include "lvgl.h"
  #include "driver/spi_common.h"
 
- #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
- #include "esp_lcd_ili9341.h"
- #elif CONFIG_EXAMPLE_LCD_CONTROLLER_GC9A01
  #include "esp_lcd_gc9a01.h"
- #endif
- 
- #if CONFIG_EXAMPLE_LCD_TOUCH_CONTROLLER_STMPE610
- #include "esp_lcd_touch_stmpe610.h"
- #endif
+  
  
  static const char *TAG = "example";
  
@@ -43,22 +36,17 @@
  #define EXAMPLE_LCD_BK_LIGHT_ON_LEVEL  1
  #define EXAMPLE_LCD_BK_LIGHT_OFF_LEVEL !EXAMPLE_LCD_BK_LIGHT_ON_LEVEL
  #define EXAMPLE_PIN_NUM_SCLK           18
- #define EXAMPLE_PIN_NUM_MOSI           19
+ #define EXAMPLE_PIN_NUM_MOSI           23
  #define EXAMPLE_PIN_NUM_MISO           21
- #define EXAMPLE_PIN_NUM_LCD_DC         5
- #define EXAMPLE_PIN_NUM_LCD_RST        3
- #define EXAMPLE_PIN_NUM_LCD_CS         4
+ #define EXAMPLE_PIN_NUM_LCD_DC         15
+ #define EXAMPLE_PIN_NUM_LCD_RST        2
+ #define EXAMPLE_PIN_NUM_LCD_CS         5
  #define EXAMPLE_PIN_NUM_BK_LIGHT       2
  #define EXAMPLE_PIN_NUM_TOUCH_CS       15
  
- // The pixel number in horizontal and vertical
- #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
- #define EXAMPLE_LCD_H_RES              240
- #define EXAMPLE_LCD_V_RES              320
- #elif CONFIG_EXAMPLE_LCD_CONTROLLER_GC9A01
  #define EXAMPLE_LCD_H_RES              240
  #define EXAMPLE_LCD_V_RES              240
- #endif
+ 
  // Bit number used to represent command and parameter
  #define EXAMPLE_LCD_CMD_BITS           8
  #define EXAMPLE_LCD_PARAM_BITS         8
@@ -209,19 +197,12 @@
          .rgb_ele_order = LCD_RGB_ELEMENT_ORDER_BGR,
          .bits_per_pixel = 16,
      };
- #if CONFIG_EXAMPLE_LCD_CONTROLLER_ILI9341
-     ESP_LOGI(TAG, "Install ILI9341 panel driver");
-     ESP_ERROR_CHECK(esp_lcd_new_panel_ili9341(io_handle, &panel_config, &panel_handle));
- #elif CONFIG_EXAMPLE_LCD_CONTROLLER_GC9A01
      ESP_LOGI(TAG, "Install GC9A01 panel driver");
      ESP_ERROR_CHECK(esp_lcd_new_panel_gc9a01(io_handle, &panel_config, &panel_handle));
- #endif
  
      ESP_ERROR_CHECK(esp_lcd_panel_reset(panel_handle));
      ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));
- #if CONFIG_EXAMPLE_LCD_CONTROLLER_GC9A01
      ESP_ERROR_CHECK(esp_lcd_panel_invert_color(panel_handle, true));
- #endif
      ESP_ERROR_CHECK(esp_lcd_panel_mirror(panel_handle, true, false));
  
      // user can flush pre-defined pattern to the screen before we turn on the screen or backlight
@@ -270,38 +251,7 @@
      /* Register done callback */
      ESP_ERROR_CHECK(esp_lcd_panel_io_register_event_callbacks(io_handle, &cbs, display));
  
- #if CONFIG_EXAMPLE_LCD_TOUCH_ENABLED
-     esp_lcd_panel_io_handle_t tp_io_handle = NULL;
-     esp_lcd_panel_io_spi_config_t tp_io_config = ESP_LCD_TOUCH_IO_SPI_STMPE610_CONFIG(EXAMPLE_PIN_NUM_TOUCH_CS);
-     // Attach the TOUCH to the SPI bus
-     ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)LCD_HOST, &tp_io_config, &tp_io_handle));
- 
-     esp_lcd_touch_config_t tp_cfg = {
-         .x_max = EXAMPLE_LCD_H_RES,
-         .y_max = EXAMPLE_LCD_V_RES,
-         .rst_gpio_num = -1,
-         .int_gpio_num = -1,
-         .flags = {
-             .swap_xy = 0,
-             .mirror_x = 0,
-             .mirror_y = 0,
-         },
-     };
-     esp_lcd_touch_handle_t tp = NULL;
- 
- #if CONFIG_EXAMPLE_LCD_TOUCH_CONTROLLER_STMPE610
-     ESP_LOGI(TAG, "Initialize touch controller STMPE610");
-     ESP_ERROR_CHECK(esp_lcd_touch_new_spi_stmpe610(tp_io_handle, &tp_cfg, &tp));
- #endif // CONFIG_EXAMPLE_LCD_TOUCH_CONTROLLER_STMPE610
- 
-     static lv_indev_t *indev;
-     indev = lv_indev_create();  // Input device driver (Touch)
-     lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
-     lv_indev_set_display(indev, display);
-     lv_indev_set_user_data(indev, tp);
-     lv_indev_set_read_cb(indev, example_lvgl_touch_cb);
- #endif
- 
+
      ESP_LOGI(TAG, "Create LVGL task");
      xTaskCreate(example_lvgl_port_task, "LVGL", EXAMPLE_LVGL_TASK_STACK_SIZE, NULL, EXAMPLE_LVGL_TASK_PRIORITY, NULL);
  
