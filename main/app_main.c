@@ -61,16 +61,14 @@
  
  extern void example_lvgl_demo_ui(lv_disp_t *disp);
  
- static bool example_notify_lvgl_flush_ready(esp_lcd_panel_io_handle_t panel_io, esp_lcd_panel_io_event_data_t *edata, void *user_ctx)
- {
+ static bool example_notify_lvgl_flush_ready(esp_lcd_panel_io_handle_t panel_io, esp_lcd_panel_io_event_data_t *edata, void *user_ctx) {
      lv_display_t *disp = (lv_display_t *)user_ctx;
      lv_display_flush_ready(disp);
      return false;
  }
  
  /* Rotate display and touch, when rotated screen in LVGL. Called when driver parameters are updated. */
- static void example_lvgl_port_update_callback(lv_display_t *disp)
- {
+ static void example_lvgl_port_update_callback(lv_display_t *disp) {
      esp_lcd_panel_handle_t panel_handle = lv_display_get_user_data(disp);
      lv_display_rotation_t rotation = lv_display_get_rotation(disp);
  
@@ -98,8 +96,7 @@
      }
  }
  
- static void example_lvgl_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map)
- {
+ static void example_lvgl_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map) {
      example_lvgl_port_update_callback(disp);
      esp_lcd_panel_handle_t panel_handle = lv_display_get_user_data(disp);
      int offsetx1 = area->x1;
@@ -112,30 +109,7 @@
      esp_lcd_panel_draw_bitmap(panel_handle, offsetx1, offsety1, offsetx2 + 1, offsety2 + 1, px_map);
  }
  
- #if CONFIG_EXAMPLE_LCD_TOUCH_ENABLED
- static void example_lvgl_touch_cb(lv_indev_t * indev, lv_indev_data_t * data)
- {
-     uint16_t touchpad_x[1] = {0};
-     uint16_t touchpad_y[1] = {0};
-     uint8_t touchpad_cnt = 0;
- 
-     esp_lcd_touch_handle_t touch_pad = lv_indev_get_user_data(indev);
-     esp_lcd_touch_read_data(touch_pad);
-     /* Get coordinates */
-     bool touchpad_pressed = esp_lcd_touch_get_coordinates(touch_pad, touchpad_x, touchpad_y, NULL, &touchpad_cnt, 1);
- 
-     if (touchpad_pressed && touchpad_cnt > 0) {
-         data->point.x = touchpad_x[0];
-         data->point.y = touchpad_y[0];
-         data->state = LV_INDEV_STATE_PRESSED;
-     } else {
-         data->state = LV_INDEV_STATE_RELEASED;
-     }
- }
- #endif
- 
- static void example_increase_lvgl_tick(void *arg)
- {
+  static void example_increase_lvgl_tick(void *arg) {
      /* Tell LVGL how many milliseconds has elapsed */
      lv_tick_inc(EXAMPLE_LVGL_TICK_PERIOD_MS);
  }
@@ -155,15 +129,7 @@
      }
  }
  
- void app_main(void)
- {
-/*     ESP_LOGI(TAG, "Turn off LCD backlight");
-     gpio_config_t bk_gpio_config = {
-         .mode = GPIO_MODE_OUTPUT,
-         .pin_bit_mask = 1ULL << EXAMPLE_PIN_NUM_BK_LIGHT
-     };
-     ESP_ERROR_CHECK(gpio_config(&bk_gpio_config));*/
- 
+ void app_main(void) {
      ESP_LOGI(TAG, "Initialize SPI bus");
      spi_bus_config_t buscfg = {
          .sclk_io_num = EXAMPLE_PIN_NUM_SCLK,
@@ -205,10 +171,7 @@
  
      // user can flush pre-defined pattern to the screen before we turn on the screen or backlight
      ESP_ERROR_CHECK(esp_lcd_panel_disp_on_off(panel_handle, true));
- 
-     //ESP_LOGI(TAG, "Turn on LCD backlight");
-     //gpio_set_level(EXAMPLE_PIN_NUM_BK_LIGHT, EXAMPLE_LCD_BK_LIGHT_ON_LEVEL);
- 
+  
      ESP_LOGI(TAG, "Initialize LVGL library");
      lv_init();
  
@@ -249,7 +212,6 @@
      /* Register done callback */
      ESP_ERROR_CHECK(esp_lcd_panel_io_register_event_callbacks(io_handle, &cbs, display));
  
-
      ESP_LOGI(TAG, "Create LVGL task");
      xTaskCreate(example_lvgl_port_task, "LVGL", EXAMPLE_LVGL_TASK_STACK_SIZE, NULL, EXAMPLE_LVGL_TASK_PRIORITY, NULL);
  
