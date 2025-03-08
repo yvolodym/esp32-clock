@@ -3,11 +3,11 @@
 This project is intended as training for esp8266. The aim of this project is to develop a low-energy clock, developed in C by [espressif](https://www.espressif.com/) with associated PCB in [KiCad](https://www.kicad.org/).
 
 ### URI
-* https://esp32-server.de/schaltplan/
-* https://jlcpcb.com/blog/guide-to-multiboard-pcb-design
-* https://tttapa.github.io/ESP8266/Chap02%20-%20Hardware.html
 * https://docs.lvgl.io/master/intro/introduction.html
-* 
+* https://github.com/espressif/esp-bsp/tree/master/components/lcd/esp_lcd_gc9a01
+* https://github.com/espressif/esp-bsp
+* https://github.com/lvgl/lv_port_esp32
+* https://github.com/lvgl/lvgl_esp32_drivers/blob/master/README.md
 
 ### Software
 * https://github.com/espressif/esp-idf/blob/master/examples/peripherals/lcd/spi_lcd_touch/README.md
