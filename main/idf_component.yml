@@ -1,3 +1,4 @@
 dependencies:
   #espressif/esp_lcd_gc9a01: ^2.0.0
-  lvgl/lvgl_esp32_drivers: ^0.0.3
+  #lvgl/lvgl_esp32_drivers: ^0.0.3
+  espressif/esp_lvgl_port: ^2.5.0

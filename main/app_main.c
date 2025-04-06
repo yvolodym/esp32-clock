@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-
 /*
 
 #define BSP_LCD_SPI_MOSI      (GPIO_NUM_23)  SDA
@@ -18,11 +17,12 @@
 */
 #include <stdio.h>
 #include <time.h>
-#include "esp_log.h"
+#include <esp_err.h>
+#include <esp_log.h>
 #include "driver/spi_master.h"
 #include "driver/gpio.h"
 #include "lvgl.h"
-#include "lvgl_helpers.h"
+#include "esp_lvgl_port.h"
 
 static const char *TAG = "Analog Clock";
 
@@ -32,26 +32,26 @@ static lv_obj_t *minute_line;
 static lv_obj_t *second_line;
 
 // Pin-Konfiguration für das GC9A01-Display
-#define GC9A01_SPI_HOST    SPI2_HOST
-#define GC9A01_PIN_NUM_MISO GPIO_NUM_NC  // Nicht verwendet
+#define GC9A01_SPI_HOST SPI2_HOST
+#define GC9A01_PIN_NUM_MISO GPIO_NUM_NC // Nicht verwendet
 #define GC9A01_PIN_NUM_MOSI GPIO_NUM_23
-#define GC9A01_PIN_NUM_CLK  GPIO_NUM_19
-#define GC9A01_PIN_NUM_CS   GPIO_NUM_22
-#define GC9A01_PIN_NUM_DC   GPIO_NUM_21
-#define GC9A01_PIN_NUM_RST  GPIO_NUM_18
+#define GC9A01_PIN_NUM_CLK GPIO_NUM_19
+#define GC9A01_PIN_NUM_CS GPIO_NUM_22
+#define GC9A01_PIN_NUM_DC GPIO_NUM_21
+#define GC9A01_PIN_NUM_RST GPIO_NUM_18
 #define GC9A01_PIN_NUM_BCKL GPIO_NUM_5
 
 // Display-Auflösung
-#define GC9A01_WIDTH  240
+#define GC9A01_WIDTH 240
 #define GC9A01_HEIGHT 240
 
 // LVGL Display- und Touch-Treiber
-static lv_disp_drv_t disp_drv;
-static lv_disp_buf_t draw_buf;
-static lv_color_t *lvgl_buffer = NULL;
+static lv_display_t *lvgl_disp = NULL;
+static esp_lcd_panel_handle_t lcd_panel = NULL;
 
 // Funktion zur Initialisierung des SPI für das Display
-void spi_init() {
+void spi_init()
+{
     spi_bus_config_t buscfg = {
         .miso_io_num = GC9A01_PIN_NUM_MISO,
         .mosi_io_num = GC9A01_PIN_NUM_MOSI,
@@ -64,7 +64,8 @@ void spi_init() {
 }
 
 // Funktion zur Initialisierung des GC9A01-Displays
-void gc9a01_init() {
+void gc9a01_init()
+{
     gpio_config_t io_conf = {
         .pin_bit_mask = (1ULL << GC9A01_PIN_NUM_CS) | (1ULL << GC9A01_PIN_NUM_DC) | (1ULL << GC9A01_PIN_NUM_RST) | (1ULL << GC9A01_PIN_NUM_BCKL),
         .mode = GPIO_MODE_OUTPUT,
@@ -85,7 +86,8 @@ void gc9a01_init() {
 }
 
 // Funktion zur Aktualisierung der Uhr
-void update_clock(lv_task_t *timer) {
+void update_clock(lv_task_t *timer)
+{
     static uint32_t last_second = 0;
     time_t now;
     struct tm timeinfo;
@@ -93,7 +95,8 @@ void update_clock(lv_task_t *timer) {
     time(&now);
     localtime_r(&now, &timeinfo);
 
-    if (last_second != timeinfo.tm_sec) {
+    if (last_second != timeinfo.tm_sec)
+    {
         last_second = timeinfo.tm_sec;
 
         // Stundenzeiger aktualisieren
@@ -107,7 +110,47 @@ void update_clock(lv_task_t *timer) {
     }
 }
 
-void app_main(void) {
+static esp_err_t app_lvgl_init(esp_lcd_panel_handle_t lp, esp_lcd_panel_io_handle_t *io_handle, esp_lcd_touch_handle_t tp, lv_display_t **lv_disp, lv_indev_t **lv_touch_indev)
+{
+    ESP_LOGI(TAG, "Initialize LVGL");
+    const lvgl_port_cfg_t lvgl_cfg = ESP_LVGL_PORT_INIT_CONFIG();
+    ESP_RETURN_ON_ERROR(lvgl_port_init(&lvgl_cfg), TAG, "LVGL port initialization failed");
+
+    const lvgl_port_display_cfg_t disp_cfg = {
+        .io_handle = *io_handle,
+        .panel_handle = lp,
+        .buffer_size = SEND_BUF_SIZE,
+        .double_buffer = true,
+        .hres = CONFIG_HWE_DISPLAY_WIDTH,
+        .vres = CONFIG_HWE_DISPLAY_HEIGHT,
+        .color_format = LV_COLOR_FORMAT_RGB565,
+        .color_space = LV_COLOR_SPACE_RGB,
+        .color_order = LV_COLOR_ORDER_BGR,
+        .rotation = {
+            .swap_xy = true,
+            .mirror_x = true,
+            .mirror_y = false,
+        },
+        .flags = {
+            .swap_bytes = true
+        }};
+
+    *lv_disp = lvgl_port_add_disp(&disp_cfg);
+
+    return ESP_OK;
+}
+
+void app_main(void)
+{
+    const lvgl_port_cfg_t lvgl_cfg = ESP_LVGL_PORT_INIT_CONFIG();
+    esp_err_t err = lvgl_port_init(&lvgl_cfg);
+    if (err != ESP_OK)
+    {
+        ESP_LOGE(TAG, "LVGL port initialization failed");
+        return;
+    }
+    ESP_LOGI(TAG, "LVGL port initialized");
+    ESP_LOGI(TAG, "Initializing Analog Clock...");
     // SPI initialisieren
     spi_init();
 
@@ -121,12 +164,12 @@ void app_main(void) {
     lvgl_buffer = heap_caps_malloc(GC9A01_WIDTH * 20 * sizeof(lv_color_t), MALLOC_CAP_DMA);
     lv_disp_buf_init(&draw_buf, lvgl_buffer, NULL, GC9A01_WIDTH * 20);
 
-    // LVGL-Display-Treiber initialisieren
     lv_disp_drv_init(&disp_drv);
     disp_drv.hor_res = GC9A01_WIDTH;
     disp_drv.ver_res = GC9A01_HEIGHT;
-    disp_drv.flush_cb = disp_driver_flush;  // Diese Funktion muss implementiert werden
-    disp_drv.draw_buf = &draw_buf;
+    disp_drv.flush_cb = gc9a01_flush;
+    disp_drv.buffer = &draw_buf;
+    disp_drv.user_data = NULL;
     lv_disp_drv_register(&disp_drv);
 
     // Hintergrundfarbe setzen
@@ -135,7 +178,7 @@ void app_main(void) {
 
     // Stundenzeiger erstellen
     hour_line = lv_line_create(screen);
-    static lv_point_t hour_points[] = { {0, -50}, {0, 0} };
+    static lv_point_t hour_points[] = {{0, -50}, {0, 0}};
     lv_line_set_points(hour_line, hour_points, 2);
     lv_obj_set_style_line_width(hour_line, 5, 0);
     lv_obj_set_style_line_color(hour_line, lv_color_hex(0xFF0000), 0);
@@ -143,7 +186,7 @@ void app_main(void) {
 
     // Minutenzeiger erstellen
     minute_line = lv_line_create(screen);
-    static lv_point_t minute_points[] = { {0, -70}, {0, 0} };
+    static lv_point_t minute_points[] = {{0, -70}, {0, 0}};
     lv_line_set_points(minute_line, minute_points, 2);
     lv_obj_set_style_line_width(minute_line, 3, 0);
     lv_obj_set_style_line_color(minute_line, lv_color_hex(0x00FF00), 0);
@@ -151,7 +194,7 @@ void app_main(void) {
 
     // Sekundenzeiger erstellen
     second_line = lv_line_create(screen);
-    static lv_point_t second_points[] = { {0, -90}, {0, 0} };
+    static lv_point_t second_points[] = {{0, -90}, {0, 0}};
     lv_line_set_points(second_line, second_points, 2);
     lv_obj_set_style_line_width(second_line, 2, 0);
     lv_obj_set_style_line_color(second_line, lv_color_hex(0x0000FF), 0);
