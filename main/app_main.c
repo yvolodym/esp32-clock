@@ -61,6 +61,21 @@ void spi_init()
         .max_transfer_sz = GC9A01_WIDTH * GC9A01_HEIGHT * 2,
     };
     spi_bus_initialize(GC9A01_SPI_HOST, &buscfg, SPI_DMA_CH_AUTO);
+
+    ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi(
+    	(esp_lcd_spi_bus_handle_t)SPIx_HOST,
+           	& (esp_lcd_panel_io_spi_config_t) {
+    		    .cs_gpio_num = CONFIG_HWE_DISPLAY_SPI_CS,
+    		    .pclk_hz = CONFIG_HWE_DISPLAY_SPI_FREQUENCY,
+    		    .lcd_cmd_bits = 32,
+    		    .lcd_param_bits = 8,
+                .spi_mode = 0,
+                .trans_queue_depth = 17,
+            },
+            io_handle
+        )
+    );
+
 }
 
 // Funktion zur Initialisierung des GC9A01-Displays
