@@ -25,7 +25,7 @@
   Pool can be "pool.ntp.org" or something more local
 */
 // Set up WiFI and time sync, replace these with your own time settings (NTP server and timezone)
-//WifiTimeLib wifiTimeLib("ch.pool.ntp.org", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00"); // Switzerland
+WifiTimeLib wifiTimeLib("ch.pool.ntp.org", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00"); // Switzerland
 
 // Font files are stored in SPIFFS (flash ram)
 #define FS_NO_GLOBALS
@@ -221,14 +221,16 @@ void setup() {
   delay(500);
   Serial.println("Booting...");
 
+  /*
   if (!SPIFFS.begin()) {
     Serial.println("SPIFFS initialisation failed!");
     while (1) yield(); // Stay here twiddling thumbs waiting
   }
+    */
   Serial.println("\r\nInitialisation done.");
 
   // Connect to WiFi
-  /*
+  
   if (wifiTimeLib.connectToWiFi("ESP32-Clock")){
     delay(500);
     Serial.println("getting current time...");
@@ -241,7 +243,7 @@ void setup() {
   } else {
     Serial.println("ERROR: WiFi connect failure");
   }
-    */
+    
 
   setupDisplays();
 
@@ -312,14 +314,14 @@ extern "C" void app_main() {
     };
     spi_bus_initialize(HSPI_HOST, &buscfg, SPI_DMA_CH_AUTO);
 
-    setupDisplays();
+    setup();
 
-    digitalWrite(display_cs_pins[1], LOW);
-    renderAnalogFace(time_secs + (millis()-ms_offset)/1000.0, bg_colors[0]);
-    digitalWrite(display_cs_pins[1], HIGH);
-  
-  // Yield to allow other tasks to run
-    delay(1);
+    while (1)
+    {
+      loop();
+      delay(100);
+    }
+    
 }
   
 /*
