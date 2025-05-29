@@ -25,7 +25,7 @@
   Pool can be "pool.ntp.org" or something more local
 */
 // Set up WiFI and time sync, replace these with your own time settings (NTP server and timezone)
-WifiTimeLib wifiTimeLib("ch.pool.ntp.org", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00"); // Switzerland
+//WifiTimeLib wifiTimeLib("ch.pool.ntp.org", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00"); // Switzerland
 
 // Font files are stored in SPIFFS (flash ram)
 #define FS_NO_GLOBALS
@@ -61,7 +61,7 @@ TFT_eSprite analog_face = TFT_eSprite(&tft);
 
 // handle multiple displays via CS pin
 #define num_displays 2
-uint8_t display_cs_pins[num_displays] = {22,21};
+uint8_t display_cs_pins[num_displays] = {22,22};
 uint16_t bg_colors[num_displays] = {TFT_DARKGREEN, TFT_BLUE};
 
 // Time 
@@ -228,6 +228,7 @@ void setup() {
   Serial.println("\r\nInitialisation done.");
 
   // Connect to WiFi
+  /*
   if (wifiTimeLib.connectToWiFi("ESP32-Clock")){
     delay(500);
     Serial.println("getting current time...");
@@ -240,6 +241,7 @@ void setup() {
   } else {
     Serial.println("ERROR: WiFi connect failure");
   }
+    */
 
   setupDisplays();
 
@@ -251,7 +253,7 @@ void setup() {
 // =========================================================================
 int fps=18;                 // frame rate counter, start val is an estimate
 float avg_fps=18.0;         // running average across 2 loop samples
-float time_secs;            // time in seconds+ms sent to rendering functions
+float time_secs = 100;            // time in seconds+ms sent to rendering functions
 int last_second = 0;        // for checking when to update the digital clock
 int ms_offset = 0;          // offset of millis() since start of the last sec
 
@@ -300,8 +302,22 @@ void loop() {
 
 extern "C" void app_main() {
     // SPI-Bus initialisieren (optional)
-    setup();
-    loop();
+    spi_bus_config_t buscfg = {
+        .mosi_io_num = TFT_MOSI,
+        .miso_io_num = -1,  // GC9A01 benötigt kein MISO
+        .sclk_io_num = TFT_SCLK,
+        .quadwp_io_num = -1,
+        .quadhd_io_num = -1,
+        .max_transfer_sz = 4096,
+    };
+    spi_bus_initialize(HSPI_HOST, &buscfg, SPI_DMA_CH_AUTO);
+
+    setupDisplays();
+    
+
+    digitalWrite(display_cs_pins[1], LOW);
+    renderDigitalFace(time_secs, bg_colors[1]);
+    digitalWrite(display_cs_pins[1], HIGH);
   
   // Yield to allow other tasks to run
     delay(1);
