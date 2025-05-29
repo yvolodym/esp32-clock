@@ -1,6 +1,5 @@
 .vscode
 build/
-sdkconfig
 *.old
 bin/
 lib/
