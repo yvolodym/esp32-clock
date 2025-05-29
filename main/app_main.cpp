@@ -313,10 +313,9 @@ extern "C" void app_main() {
     spi_bus_initialize(HSPI_HOST, &buscfg, SPI_DMA_CH_AUTO);
 
     setupDisplays();
-    
 
     digitalWrite(display_cs_pins[1], LOW);
-    renderDigitalFace(time_secs, bg_colors[1]);
+    renderAnalogFace(time_secs + (millis()-ms_offset)/1000.0, bg_colors[0]);
     digitalWrite(display_cs_pins[1], HIGH);
   
   // Yield to allow other tasks to run
