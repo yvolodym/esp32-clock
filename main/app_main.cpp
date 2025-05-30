@@ -3,7 +3,8 @@
 #include "time.h"
 #include <SPI.h>
 #include <TFT_eSPI.h>     // https://github.com/Bodmer/TFT_eSPI
-#include <WifiTimeLib.h>
+#include "WifiTimeLib.h"
+#include "nvs_flash.h"
 
 /*
 
@@ -25,7 +26,7 @@
   Pool can be "pool.ntp.org" or something more local
 */
 // Set up WiFI and time sync, replace these with your own time settings (NTP server and timezone)
-WifiTimeLib wifiTimeLib("ch.pool.ntp.org", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00"); // Switzerland
+//WifiTimeLib wifiTimeLib("ch.pool.ntp.org", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00"); // Switzerland
 
 // Font files are stored in SPIFFS (flash ram)
 #define FS_NO_GLOBALS
@@ -35,6 +36,12 @@ TFT_eSPI tft = TFT_eSPI();  // Invoke library, pins defined in User_Setup.h
 TFT_eSprite digital_face_hours = TFT_eSprite(&tft);
 TFT_eSprite digital_face_minutes = TFT_eSprite(&tft);
 TFT_eSprite analog_face = TFT_eSprite(&tft);
+
+/* ESPNOW can work in both station and softap mode. It is configured in menuconfig. */
+#define WIFI_CONNECTED_BIT BIT0
+#define WIFI_FAIL_BIT      BIT1
+#define MAXIMUM_RETRY_COUNT 5
+
 
 #define CLOCK_X_POS 118
 #define CLOCK_Y_POS 118
@@ -59,10 +66,15 @@ TFT_eSprite analog_face = TFT_eSprite(&tft);
 #define SCREEN_W 240
 #define SCREEN_H 240
 
+
+static const char *TAG = "esp32_clock";
 // handle multiple displays via CS pin
 #define num_displays 2
 uint8_t display_cs_pins[num_displays] = {22,22};
 uint16_t bg_colors[num_displays] = {TFT_DARKGREEN, TFT_BLUE};
+void wifi_init(void);
+static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data);
+static EventGroupHandle_t s_wifi_event_group;
 
 // Time 
 tm timeinfo;
@@ -227,10 +239,11 @@ void setup() {
     while (1) yield(); // Stay here twiddling thumbs waiting
   }
     */
+  
   Serial.println("\r\nInitialisation done.");
 
   // Connect to WiFi
-  
+  /*
   if (wifiTimeLib.connectToWiFi("ESP32-Clock")){
     delay(500);
     Serial.println("getting current time...");
@@ -243,7 +256,7 @@ void setup() {
   } else {
     Serial.println("ERROR: WiFi connect failure");
   }
-    
+    */
 
   setupDisplays();
 
@@ -303,6 +316,21 @@ void loop() {
 }
 
 extern "C" void app_main() {
+    //Initialize NVS
+    esp_err_t ret = nvs_flash_init();
+    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+      ESP_ERROR_CHECK(nvs_flash_erase());
+      ret = nvs_flash_init();
+    }
+    ESP_ERROR_CHECK(ret);
+
+    wifi_init();
+
+    Serial.println("WiFi initialised");
+    ESP_LOGE(TAG, "WiFi initialised successfully");
+
+    // Initialize ESPNOW
+    ESP_LOGE(TAG, "Send cb arg error");
     // SPI-Bus initialisieren (optional)
     spi_bus_config_t buscfg = {
         .mosi_io_num = TFT_MOSI,
@@ -322,6 +350,63 @@ extern "C" void app_main() {
       delay(100);
     }
     
+}
+
+/* WiFi should start before using ESPNOW */
+void wifi_init(void)
+{
+    s_wifi_event_group = xEventGroupCreate();
+
+    ESP_ERROR_CHECK(esp_netif_init());
+
+    ESP_ERROR_CHECK(esp_event_loop_create_default());
+
+    esp_netif_create_default_wifi_sta();
+    esp_netif_create_default_wifi_ap();
+
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    ESP_ERROR_CHECK(esp_wifi_init(&cfg));
+
+    esp_event_handler_instance_t instance_any_id;
+    ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT,
+                                                        ESP_EVENT_ANY_ID,
+                                                        &event_handler,
+                                                        NULL,
+                                                        &instance_any_id));
+    esp_event_handler_instance_t instance_got_ip;
+    ESP_ERROR_CHECK(esp_event_handler_instance_register(IP_EVENT,
+                                                        IP_EVENT_STA_GOT_IP,
+                                                        &event_handler,
+                                                        NULL,
+                                                        &instance_got_ip));
+
+    ESP_ERROR_CHECK(esp_wifi_start() );
+
+    ESP_LOGI(TAG, "wifi_init finished.");
+
+    /* Waiting until either the connection is established (WIFI_CONNECTED_BIT) or connection failed for the maximum
+     * number of re-tries (WIFI_FAIL_BIT). The bits are set by event_handler() (see above) */
+/*    EventBits_t bits = xEventGroupWaitBits(s_wifi_event_group,
+        WIFI_CONNECTED_BIT | WIFI_FAIL_BIT,
+        pdFALSE,
+        pdFALSE,
+        portMAX_DELAY);*/
+
+    /* xEventGroupWaitBits() returns the bits before the call returned, hence we can test which event actually
+     * happened. */
+    /*if (bits & WIFI_CONNECTED_BIT) {
+        ESP_LOGI(TAG, "Successfully connected to AP");
+    } else if (bits & WIFI_FAIL_BIT) {
+        ESP_LOGI(TAG, "Failed to connect to AP");
+    } else {
+        ESP_LOGE(TAG, "UNEXPECTED EVENT");
+    }*/
+
+}
+
+static void event_handler(void* arg, esp_event_base_t event_base,
+                                int32_t event_id, void* event_data)
+{
 }
   
 /*
