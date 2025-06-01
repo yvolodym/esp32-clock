@@ -107,18 +107,18 @@ static void wifi_event_handler(void *arg, esp_event_base_t event_base,
 }
 
 /* Initialize soft AP */
-esp_netif_t *wifi_init_softap(void)
+esp_netif_t* wifi_init_softap(void)
 {
     esp_netif_t *esp_netif_ap = esp_netif_create_default_wifi_ap();
 
     wifi_config_t wifi_ap_config = {
         .ap = {
             .ssid = EXAMPLE_ESP_WIFI_AP_SSID,
+            .password = EXAMPLE_ESP_WIFI_AP_PASSWD,
             .ssid_len = strlen(EXAMPLE_ESP_WIFI_AP_SSID),
             .channel = EXAMPLE_ESP_WIFI_CHANNEL,
-            .password = EXAMPLE_ESP_WIFI_AP_PASSWD,
-            .max_connection = EXAMPLE_MAX_STA_CONN,
             .authmode = WIFI_AUTH_WPA2_PSK,
+            .max_connection = EXAMPLE_MAX_STA_CONN,
             .pmf_cfg = {
                 .required = false,
             },
@@ -138,7 +138,7 @@ esp_netif_t *wifi_init_softap(void)
 }
 
 /* Initialize wifi station */
-esp_netif_t *wifi_init_sta(void)
+esp_netif_t* wifi_init_sta(void)
 {
     esp_netif_t *esp_netif_sta = esp_netif_create_default_wifi_sta();
 
@@ -147,13 +147,13 @@ esp_netif_t *wifi_init_sta(void)
             .ssid = EXAMPLE_ESP_WIFI_STA_SSID,
             .password = EXAMPLE_ESP_WIFI_STA_PASSWD,
             .scan_method = WIFI_ALL_CHANNEL_SCAN,
-            .failure_retry_cnt = EXAMPLE_ESP_MAXIMUM_RETRY,
             /* Authmode threshold resets to WPA2 as default if password matches WPA2 standards (password len => 8).
-             * If you want to connect the device to deprecated WEP/WPA networks, Please set the threshold value
-             * to WIFI_AUTH_WEP/WIFI_AUTH_WPA_PSK and set the password with length and format matching to
+            * If you want to connect the device to deprecated WEP/WPA networks, Please set the threshold value
+            * to WIFI_AUTH_WEP/WIFI_AUTH_WPA_PSK and set the password with length and format matching to
             * WIFI_AUTH_WEP/WIFI_AUTH_WPA_PSK standards.
-             */
-            .threshold.authmode = ESP_WIFI_SCAN_AUTH_MODE_THRESHOLD,
+            */            
+            .threshold = {.authmode = ESP_WIFI_SCAN_AUTH_MODE_THRESHOLD},
+            .failure_retry_cnt = EXAMPLE_ESP_MAXIMUM_RETRY,
             .sae_pwe_h2e = WPA3_SAE_PWE_BOTH,
         },
     };

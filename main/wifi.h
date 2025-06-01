@@ -1,1 +1,0 @@
-static void wifi_init(void);
