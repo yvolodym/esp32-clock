@@ -153,8 +153,8 @@ esp_netif_t* wifi_init_sta(void)
             * WIFI_AUTH_WEP/WIFI_AUTH_WPA_PSK standards.
             */            
             .threshold = {.authmode = ESP_WIFI_SCAN_AUTH_MODE_THRESHOLD},
-            .failure_retry_cnt = EXAMPLE_ESP_MAXIMUM_RETRY,
             .sae_pwe_h2e = WPA3_SAE_PWE_BOTH,
+            .failure_retry_cnt = EXAMPLE_ESP_MAXIMUM_RETRY,
         },
     };
 
