@@ -4,6 +4,7 @@
 #include <TFT_eSPI.h>     // https://github.com/Bodmer/TFT_eSPI
 #include "nvs_flash.h"
 #include "esp_log.h"
+#include "wifi.h"
 
 /*
 
@@ -71,7 +72,7 @@ static const char *TAG = "esp32_clock";
 #define num_displays 2
 uint8_t display_cs_pins[num_displays] = {22,22};
 uint16_t bg_colors[num_displays] = {TFT_DARKGREEN, TFT_BLUE};
-void wifi_init(void);
+
 // Time 
 tm timeinfo;
 time_t now;
