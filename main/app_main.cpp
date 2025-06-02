@@ -6,6 +6,11 @@
 #include "esp_log.h"
 #include "wifi.h"
 
+#include "MaliBold60.h"
+#include "MaliBold90.h"
+#include "NotoSansBold15.h"
+#include "NotoSansBold36.h"
+
 /*
 
 #define BSP_LCD_SPI_MOSI      (GPIO_NUM_23)  SDA
@@ -288,14 +293,16 @@ void loop() {
       last_second = secs;
 
       // digital clock
+      ESP_LOGE(TAG, "digital clock render");
       digitalWrite(display_cs_pins[1], LOW);
       renderDigitalFace(time_secs, bg_colors[1]);
       digitalWrite(display_cs_pins[1], HIGH);
     } 
 
     // analog clock
+    ESP_LOGE(TAG, "analog clock render");
     digitalWrite(display_cs_pins[0], LOW);
-    renderAnalogFace(time_secs + (millis()-ms_offset)/1000.0, bg_colors[0]);
+    renderAnalogFace(time_secs + (millis()-ms_offset)/1000.0, bg_colors[1]);
     digitalWrite(display_cs_pins[0], HIGH);
 
     // Keep track of frame rate and use it to keep the animation consistent
@@ -319,8 +326,6 @@ extern "C" void app_main() {
     }
     ESP_ERROR_CHECK(ret);
 
-    wifi_init();
-
     Serial.println("WiFi initialised");
     ESP_LOGE(TAG, "WiFi initialised successfully");
 
@@ -339,10 +344,12 @@ extern "C" void app_main() {
 
     setup();
 
+    //wifi_init();
+
     while (1)
     {
       loop();
-      delay(100);
+      delay(1000);
     }
     
 }
