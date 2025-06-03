@@ -262,7 +262,7 @@ void loop() {
     time_secs = timeinfo.tm_hour*3600
               + timeinfo.tm_min*60 
               + secs;
-
+/*
     if (secs != last_second){ 
       ms_offset = m;
       last_second = secs;
@@ -270,6 +270,16 @@ void loop() {
       // digital clock
       digitalWrite(display_cs_pins[1], LOW);
       renderDigitalFace(time_secs, bg_colors[1]);
+      digitalWrite(display_cs_pins[1], HIGH);
+    } 
+*/
+    if (secs != last_second){ 
+      ms_offset = m;
+      last_second = secs;
+
+      // digital clock
+      digitalWrite(display_cs_pins[1], LOW);
+      renderAnalogFace(time_secs, bg_colors[0]);
       digitalWrite(display_cs_pins[1], HIGH);
     } 
 
