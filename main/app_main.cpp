@@ -302,7 +302,7 @@ void loop() {
     // analog clock
     ESP_LOGE(TAG, "analog clock render");
     digitalWrite(display_cs_pins[0], LOW);
-    renderAnalogFace(time_secs + (millis()-ms_offset)/1000.0, bg_colors[1]);
+    renderAnalogFace(time_secs + (millis()-ms_offset)/1000.0, TFT_YELLOW);//bg_colors[1]);
     digitalWrite(display_cs_pins[0], HIGH);
 
     // Keep track of frame rate and use it to keep the animation consistent
