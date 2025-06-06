@@ -4643,7 +4643,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "0,1µF"
+		(property "Value" "100nF"
 			(at 41.91 87.6299 0)
 			(effects
 				(font
@@ -4979,7 +4979,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "0,1µF"
+		(property "Value" "100nF"
 			(at 227.33 88.8999 0)
 			(effects
 				(font
