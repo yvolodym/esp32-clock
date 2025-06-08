@@ -30,3 +30,11 @@ This project is intended as training for esp8266. The aim of this project is to 
 ### WIFI Provisioning
 * https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/provisioning/wifi_provisioning.html#
 * https://github.com/espressif/esp-idf/blob/master/examples/provisioning/wifi_prov_mgr/README.md
+
+| Pin | Name |
+|-----|------|
+|IO19 |RST   |
+|IO10 |SCL   |
+|IO20 |CS    |
+|IO21 |DC    |
+|IO22 |MOSI  |
