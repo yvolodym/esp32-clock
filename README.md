@@ -9,6 +9,9 @@ This project is intended as training for esp8266. The aim of this project is to 
 * https://github.com/lvgl/lv_port_esp32
 * https://github.com/lvgl/lvgl_esp32_drivers/blob/master/README.md
 
+### HARDWARE
+ESP32-PICO-V3
+
 ### Software
 * https://github.com/espressif/esp-idf/blob/master/examples/peripherals/lcd/spi_lcd_touch/README.md
 -------------------------------
