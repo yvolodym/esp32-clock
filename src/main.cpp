@@ -26,7 +26,6 @@ WifiTimeLib wifiTimeLib("ch.pool.ntp.org", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/
 
 // Font files are stored in SPIFFS (flash ram)
 #define FS_NO_GLOBALS
-#include <FS.h>
 
 TFT_eSPI tft = TFT_eSPI();  // Invoke library, pins defined in User_Setup.h
 TFT_eSprite digital_face_hours = TFT_eSprite(&tft);
@@ -58,7 +57,7 @@ TFT_eSprite analog_face = TFT_eSprite(&tft);
 
 // handle multiple displays via CS pin
 #define num_displays 2
-uint8_t display_cs_pins[num_displays] = {22,21};
+uint8_t display_cs_pins[num_displays] = { 20, 20 };
 uint16_t bg_colors[num_displays] = {TFT_DARKGREEN, TFT_BLUE};
 
 // Time 
@@ -256,16 +255,17 @@ int ms_offset = 0;          // offset of millis() since start of the last sec
 
 void loop() {
   long m = millis();
+  
   if (targetTime < m) {   
     // schedule next tick time for smoother movement
-    targetTime = m +  3;
+    targetTime = m + 3;
 
     // Update time periodically
     time(&now);
     localtime_r(&now, &timeinfo);
     int secs = timeinfo.tm_sec;
-    time_secs = timeinfo.tm_hour*3600
-              + timeinfo.tm_min*60 
+    time_secs = timeinfo.tm_hour * 3600
+              + timeinfo.tm_min * 60 
               + secs;
 /*
     if (secs != last_second){ 
