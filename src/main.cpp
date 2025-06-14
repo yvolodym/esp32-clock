@@ -215,17 +215,18 @@ void setup() {
   Serial.begin(115200);
   delay(500);
   Serial.println("Booting...");
-/*
+
   if (!SPIFFS.begin(true)) {
     Serial.println("SPIFFS initialisation failed!");
     while (1) yield(); // Stay here twiddling thumbs waiting
   }
-*/
+/*
   if (SPIFFS.begin()) {
     Serial.println("SPIFFS mounted successfully");
   } else {
     Serial.println("SPIFFS mount failed");
   }
+    */
   Serial.println("\r\nInitialisation done.");
 
   // Connect to WiFi
