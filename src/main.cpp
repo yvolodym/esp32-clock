@@ -220,13 +220,10 @@ void setup() {
     Serial.println("SPIFFS initialisation failed!");
     while (1) yield(); // Stay here twiddling thumbs waiting
   }
-/*
-  if (SPIFFS.begin()) {
-    Serial.println("SPIFFS mounted successfully");
-  } else {
-    Serial.println("SPIFFS mount failed");
+  else {   
+    Serial.println("SPIFFS initialised successfully.");
   }
-    */
+
   Serial.println("\r\nInitialisation done.");
 
   // Connect to WiFi
