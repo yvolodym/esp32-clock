@@ -58,7 +58,7 @@ TFT_eSprite analog_face = TFT_eSprite(&tft);
 // handle multiple displays via CS pin
 #define num_displays 2
 uint8_t display_cs_pins[num_displays] = { 20, 20 };
-uint16_t bg_colors[num_displays] = {TFT_DARKGREEN, TFT_BLUE};
+uint16_t bg_colors[num_displays] = {TFT_BLUE, TFT_DARKGREEN};
 
 // Time 
 tm timeinfo;
@@ -284,13 +284,15 @@ void loop() {
 
       // digital clock
       digitalWrite(display_cs_pins[1], LOW);
-      renderAnalogFace(time_secs, bg_colors[0]);
+      //renderAnalogFace(time_secs, bg_colors[1]);
+      renderDigitalFace(time_secs, bg_colors[1]);
       digitalWrite(display_cs_pins[1], HIGH);
     } 
 
     // analog clock
     digitalWrite(display_cs_pins[0], LOW);
-    renderAnalogFace(time_secs + (millis()-ms_offset)/1000.0, bg_colors[0]);
+    //renderAnalogFace(time_secs + (millis() - ms_offset)/1000.0, bg_colors[1]);
+    renderDigitalFace(time_secs, bg_colors[1]);
     digitalWrite(display_cs_pins[0], HIGH);
 
     // Keep track of frame rate and use it to keep the animation consistent
