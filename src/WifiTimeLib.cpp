@@ -1,5 +1,8 @@
 #include "WifiTimeLib.h"
+#include <TFT_eSPI.h> 
 // inspired by https://github.com/SensorsIot/NTP-time-for-ESP8266-and-ESP32/blob/master/NTP_Example/NTP_Example.ino
+
+#define SCREEN_W 240
 
 WifiTimeLib::WifiTimeLib(const char* ntp_server, const char* tz_info) : NTP_SERVER(ntp_server), TZ_INFO(tz_info) {}
 
@@ -15,8 +18,8 @@ String WifiTimeLib::getFormattedTime(){
     return String(time_output);
 }
 
-bool WifiTimeLib::connectToWiFi(const char* ap_name) {
-  wm.setAPCallback(std::bind(&WifiTimeLib::configModeCallback, this, &wm));
+bool WifiTimeLib::connectToWiFi(const char* ap_name, TFT_eSPI* tft) {
+  wm.setAPCallback(std::bind(&WifiTimeLib::configModeCallback, this, &wm, tft));
   Serial.print("Connecting to WiFi");
   WiFi.mode(WIFI_STA);
 
@@ -40,11 +43,30 @@ bool WifiTimeLib::connectToWiFi(const char* ap_name) {
   }
 }
 
-void WifiTimeLib::configModeCallback(WiFiManager *wm) {
+void WifiTimeLib::configModeCallback(WiFiManager *wm, TFT_eSPI* tft) {
     Serial.println("Entered config mode");
     Serial.println(WiFi.softAPIP());
     Serial.println(wm->getConfigPortalSSID());
+    printNetworkInfo(tft, wm->getConfigPortalSSID(), WiFi.softAPIP());
 }
+
+
+// =========================================================================
+// Print network info
+// =========================================================================
+void WifiTimeLib::printNetworkInfo(TFT_eSPI* tft, String ssid, IPAddress ip) {
+  tft -> fillScreen(TFT_BLACK);
+  tft -> setTextColor(TFT_WHITE, TFT_BLACK);
+  tft -> setTextWrap(true); // Enable text wrapping
+  tft -> setFreeFont(&FreeSans9pt7b); // Set a free font for better readability
+  tft -> setTextSize(1); // Set text size
+  tft -> setTextDatum(MC_DATUM);
+  tft -> drawString("Network Info", SCREEN_W / 2, 40);
+  tft -> setTextDatum(TL_DATUM);
+  tft -> drawString("SSID: " + ssid, 10, 70);
+  tft -> drawString("IP Address: " + ip.toString(), 10, 100);
+ }
+
 
 // retrieve NTP time with an optional timeout in seconds
 bool WifiTimeLib::getNTPtime(int timeout=10) {

@@ -24,6 +24,7 @@
 // Set up WiFI and time sync, replace these with your own time settings (NTP server and timezone)
 WifiTimeLib wifiTimeLib("ch.pool.ntp.org", "CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00"); // Switzerland
 
+
 // Font files are stored in SPIFFS (flash ram)
 #define FS_NO_GLOBALS
 
@@ -198,12 +199,15 @@ void setupDisplays(){
   // Usually this is when screen ribbon connector is at the bottom
   tft.setRotation(0);
   tft.fillScreen(TFT_BLACK);
+
   for (int i=0; i < num_displays; i++){
     digitalWrite(display_cs_pins[i],HIGH);
   }
+    /*
   digitalWrite(display_cs_pins[1], LOW);
-  tft.fillSmoothCircle( CLOCK_R-1, CLOCK_R-1, CLOCK_R, bg_colors[1] );
+  tft.fillSmoothCircle( CLOCK_R - 1, CLOCK_R - 1, CLOCK_R, bg_colors[1] );
   digitalWrite(display_cs_pins[1], HIGH);
+  */
 }
 
 // =========================================================================
@@ -225,8 +229,10 @@ void setup() {
 
   Serial.println("\r\nInitialisation done.");
 
+  setupDisplays();
+
   // Connect to WiFi
-  if (wifiTimeLib.connectToWiFi("ESP32-Clock")){
+  if (wifiTimeLib.connectToWiFi("ESP32-Clock", &tft)) {
     delay(500);
     Serial.println("getting current time...");
     // get NTP time
@@ -238,8 +244,6 @@ void setup() {
   } else {
     Serial.println("ERROR: WiFi connect failure");
   }
-
-  setupDisplays();
 
   targetTime = millis();
 }

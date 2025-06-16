@@ -2,16 +2,17 @@
 #define WIFI_TIME_LIB_H
 
 #include <WiFiManager.h>
-#include <time.h>
+#include <TFT_eSPI.h>
 
 class WifiTimeLib {
 public:
     WifiTimeLib(const char* ntp_server, const char* tz_info);
     String getFormattedDate();
     String getFormattedTime();
-    bool connectToWiFi(const char* ap_name);
-    void configModeCallback(WiFiManager *wm);
+    bool connectToWiFi(const char* ap_name, TFT_eSPI* tft);
+    void configModeCallback(WiFiManager *wm, TFT_eSPI* tft);
     bool getNTPtime(int sec);
+    void printNetworkInfo(TFT_eSPI* tft, String ssid = "", IPAddress ip = IPAddress());
 
 private:
     tm timeinfo;
