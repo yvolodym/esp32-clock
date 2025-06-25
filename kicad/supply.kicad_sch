@@ -1640,15 +1640,15 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Power_Protection:NUP2105L"
+		(symbol "Power_Protection:USBLC6-2P6"
 			(pin_names
 				(hide yes)
 			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "D"
-				(at 5.715 2.54 0)
+			(property "Reference" "U"
+				(at 0.635 5.715 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1656,8 +1656,8 @@
 					(justify left)
 				)
 			)
-			(property "Value" "NUP2105L"
-				(at 5.715 0.635 0)
+			(property "Value" "USBLC6-2P6"
+				(at 0.635 3.81 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1665,8 +1665,19 @@
 					(justify left)
 				)
 			)
-			(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-				(at 5.715 -1.27 0)
+			(property "Footprint" "Package_TO_SOT_SMD:SOT-666"
+				(at 1.016 -6.731 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(italic yes)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.st.com/resource/en/datasheet/usblc6-2.pdf"
+				(at 1.016 -8.636 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1675,16 +1686,7 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" "https://www.onsemi.com/pub_link/Collateral/NUP2105L-D.PDF"
-				(at 3.175 3.175 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Dual Line CAN Bus Protector, 24Vrwm"
+			(property "Description" "Very low capacitance ESD protection diode, 2 data-line, SOT-666"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1693,7 +1695,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "can esd protection suppression transient"
+			(property "ki_keywords" "usb ethernet video"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1702,7 +1704,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_fp_filters" "SOT?23*"
+			(property "ki_fp_filters" "SOT?666*"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1711,30 +1713,237 @@
 					(hide yes)
 				)
 			)
-			(symbol "NUP2105L_0_0"
-				(pin passive line
-					(at 0 -5.08 90)
-					(length 2.54)
-					(name "A"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
+			(symbol "USBLC6-2P6_0_0"
+				(circle
+					(center -1.524 0)
+					(radius 0.0001)
+					(stroke
+						(width 0.508)
+						(type default)
 					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center -0.508 2.032)
+					(radius 0.0001)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center -0.508 -4.572)
+					(radius 0.0001)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0.508 2.032)
+					(radius 0.0001)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0.508 -4.572)
+					(radius 0.0001)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 1.524 -2.54)
+					(radius 0.0001)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
 					)
 				)
 			)
-			(symbol "NUP2105L_0_1"
+			(symbol "USBLC6-2P6_0_1"
+				(polyline
+					(pts
+						(xy -2.54 0) (xy 2.54 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 -2.54) (xy 2.54 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 0.508) (xy -1.016 0.508) (xy -1.524 1.524) (xy -2.032 0.508)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 -3.048) (xy -1.016 -3.048)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.016 1.524) (xy -2.032 1.524)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.016 -4.064) (xy -2.032 -4.064) (xy -1.524 -3.048) (xy -1.016 -4.064)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.508 -1.143) (xy -0.508 -0.762) (xy 0.508 -0.762)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy -0.508 2.032) (xy 0.508 2.032) (xy 0 1.524) (xy 0 -4.064) (xy -0.508 -4.572) (xy 0.508 -4.572)
+						(xy 0 -5.08)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.508 -1.778) (xy -0.508 -1.778) (xy 0 -0.762) (xy 0.508 -1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.016 1.524) (xy 2.032 1.524)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.016 -3.048) (xy 2.032 -3.048)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.032 0.508) (xy 1.016 0.508) (xy 1.524 1.524) (xy 2.032 0.508)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.032 -4.064) (xy 1.016 -4.064) (xy 1.524 -3.048) (xy 2.032 -4.064)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "USBLC6-2P6_1_1"
 				(rectangle
-					(start -4.445 2.54)
-					(end 4.445 -2.54)
+					(start -2.54 2.794)
+					(end 2.54 -5.334)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -1745,7 +1954,7 @@
 				)
 				(polyline
 					(pts
-						(xy -3.81 1.27) (xy -3.175 0.635) (xy -1.905 0.635) (xy -1.27 0)
+						(xy -0.508 2.032) (xy -1.524 2.032) (xy -1.524 -4.572) (xy -0.508 -4.572)
 					)
 					(stroke
 						(width 0)
@@ -1757,7 +1966,7 @@
 				)
 				(polyline
 					(pts
-						(xy -2.54 2.54) (xy -2.54 0.635)
+						(xy 0.508 -4.572) (xy 1.524 -4.572) (xy 1.524 2.032) (xy 0.508 2.032)
 					)
 					(stroke
 						(width 0)
@@ -1767,108 +1976,10 @@
 						(type none)
 					)
 				)
-				(polyline
-					(pts
-						(xy -2.54 0.635) (xy -2.54 -1.27) (xy 2.54 -1.27) (xy 2.54 0.635)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.54 0.635) (xy -1.905 -0.635) (xy -3.175 -0.635) (xy -2.54 0.635)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.54 0.635) (xy -3.175 1.905) (xy -1.905 1.905) (xy -2.54 0.635) (xy -2.54 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -1.27) (xy 0 -2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 1.27) (xy 1.905 0.635) (xy 2.54 0.635) (xy 3.175 0.635) (xy 3.81 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 2.54) (xy 2.54 0.635)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 0.635) (xy 1.905 -0.635) (xy 3.175 -0.635) (xy 2.54 0.635)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 0.635) (xy 3.175 1.905) (xy 1.905 1.905) (xy 2.54 0.635)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "NUP2105L_1_1"
 				(pin passive line
-					(at -2.54 5.08 270)
+					(at -5.08 0 0)
 					(length 2.54)
-					(name "K"
+					(name "I/O1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1884,9 +1995,45 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 5.08 270)
+					(at -5.08 -2.54 0)
 					(length 2.54)
-					(name "K"
+					(name "I/O2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name "VBUS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -7.62 90)
+					(length 2.54)
+					(name "GND"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1894,6 +2041,42 @@
 						)
 					)
 					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 2.54)
+					(name "I/O1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 -2.54 180)
+					(length 2.54)
+					(name "I/O2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2793,28 +2976,10 @@
 		(uuid "76dc87d4-2ce7-42a4-b5a6-60eb683650d5")
 	)
 	(junction
-		(at 72.39 100.33)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "7d60dd08-159f-43d9-8e28-b63c43a76ba8")
-	)
-	(junction
 		(at 40.64 162.56)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ab44b369-ae12-442f-9830-553ba30a452b")
-	)
-	(junction
-		(at 74.93 66.04)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "ba7d3962-a126-4f12-b1d8-0ac31749f7d8")
-	)
-	(junction
-		(at 62.23 48.26)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "be852228-43c9-4165-a939-57c09eaac943")
 	)
 	(junction
 		(at 93.98 123.19)
@@ -2833,12 +2998,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f3728588-ef46-40c3-8201-8ca432582175")
-	)
-	(junction
-		(at 67.31 60.96)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f48ec13b-21e2-47bd-8854-2f836c6ac4af")
 	)
 	(no_connect
 		(at 124.46 146.05)
@@ -2859,10 +3018,6 @@
 	(no_connect
 		(at 124.46 143.51)
 		(uuid "7fe64696-27e2-4508-acee-18acf662f719")
-	)
-	(no_connect
-		(at 69.85 85.09)
-		(uuid "81bfe882-3fe8-4ded-b60c-6aed1c7bf8fd")
 	)
 	(no_connect
 		(at 124.46 153.67)
@@ -2970,6 +3125,26 @@
 	)
 	(wire
 		(pts
+			(xy 73.66 52.07) (xy 77.47 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "103e645a-ef3d-4197-a405-ec6a055eda24")
+	)
+	(wire
+		(pts
+			(xy 78.74 60.96) (xy 88.9 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "14c22927-9127-47c4-a3a3-c1b950591acb")
+	)
+	(wire
+		(pts
 			(xy 93.98 140.97) (xy 93.98 144.78)
 		)
 		(stroke
@@ -3010,13 +3185,13 @@
 	)
 	(wire
 		(pts
-			(xy 62.23 48.26) (xy 62.23 72.39)
+			(xy 59.69 66.04) (xy 64.77 66.04)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "25d1e291-ebde-400e-b78d-e5949bf4ffd2")
+		(uuid "21d73a5a-6ead-4b28-95e0-85c1efb2e84c")
 	)
 	(wire
 		(pts
@@ -3090,16 +3265,6 @@
 	)
 	(wire
 		(pts
-			(xy 72.39 95.25) (xy 72.39 100.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "351bc0a5-f7b1-4002-85d7-7d785b2fbcb0")
-	)
-	(wire
-		(pts
 			(xy 93.98 123.19) (xy 99.06 123.19)
 		)
 		(stroke
@@ -3127,26 +3292,6 @@
 			(type default)
 		)
 		(uuid "3bbf3367-31bd-45ed-ac13-2158adc59308")
-	)
-	(wire
-		(pts
-			(xy 67.31 60.96) (xy 59.69 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3d4f99fc-4559-463d-973f-113e50837edc")
-	)
-	(wire
-		(pts
-			(xy 74.93 66.04) (xy 74.93 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3ec54240-dddc-4d5e-96c9-10f5c04badc2")
 	)
 	(wire
 		(pts
@@ -3240,13 +3385,13 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 100.33) (xy 72.39 100.33)
+			(xy 78.74 63.5) (xy 83.82 63.5)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "5c3a0bfc-41c2-4532-acaf-51747dd0e855")
+		(uuid "60de3e45-b6f3-4936-b819-36a2079f0558")
 	)
 	(wire
 		(pts
@@ -3260,13 +3405,13 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 128.27) (xy 83.82 66.04)
+			(xy 73.66 68.58) (xy 73.66 72.39)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "64371a10-5d0d-453c-8306-93292ec11c07")
+		(uuid "64e37c25-3391-43f3-80e9-47fa98d1ea05")
 	)
 	(wire
 		(pts
@@ -3300,16 +3445,6 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 60.96) (xy 67.31 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "743319f4-342d-4237-b428-b34f636eae90")
-	)
-	(wire
-		(pts
 			(xy 62.23 157.48) (xy 62.23 153.67)
 		)
 		(stroke
@@ -3320,13 +3455,13 @@
 	)
 	(wire
 		(pts
-			(xy 59.69 48.26) (xy 62.23 48.26)
+			(xy 73.66 55.88) (xy 73.66 52.07)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "761dcf7c-b997-4099-a912-f30b7ff70b17")
+		(uuid "79b82119-fa7b-4684-a990-a4612b01c997")
 	)
 	(wire
 		(pts
@@ -3440,16 +3575,6 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 60.96) (xy 67.31 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "af7f6ba3-ccd2-417b-88a5-219c7428b4c0")
-	)
-	(wire
-		(pts
 			(xy 62.23 167.64) (xy 62.23 171.45)
 		)
 		(stroke
@@ -3480,16 +3605,6 @@
 	)
 	(wire
 		(pts
-			(xy 74.93 66.04) (xy 83.82 66.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bc09c511-d17d-4014-b20a-6f8138fd3409")
-	)
-	(wire
-		(pts
 			(xy 40.64 151.13) (xy 40.64 162.56)
 		)
 		(stroke
@@ -3497,16 +3612,6 @@
 			(type default)
 		)
 		(uuid "bc94f49d-26e7-4e7e-b23b-732ea76b7252")
-	)
-	(wire
-		(pts
-			(xy 59.69 66.04) (xy 74.93 66.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c569287e-2e11-4292-b0b2-7487f6e50314")
 	)
 	(wire
 		(pts
@@ -3527,6 +3632,16 @@
 			(type default)
 		)
 		(uuid "caa9e3aa-9948-4215-98fc-6704555f3b60")
+	)
+	(wire
+		(pts
+			(xy 64.77 63.5) (xy 68.58 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ccdd19f6-3612-4073-b7d2-c8c7bec55c3c")
 	)
 	(wire
 		(pts
@@ -3570,6 +3685,16 @@
 	)
 	(wire
 		(pts
+			(xy 64.77 66.04) (xy 64.77 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d6ae7c1b-f2c1-4576-b05a-dd64d9065df8")
+	)
+	(wire
+		(pts
 			(xy 113.03 48.26) (xy 113.03 52.07)
 		)
 		(stroke
@@ -3590,6 +3715,16 @@
 	)
 	(wire
 		(pts
+			(xy 59.69 48.26) (xy 81.28 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e0747833-8990-4660-8de5-8dcf3e6afa03")
+	)
+	(wire
+		(pts
 			(xy 102.87 71.12) (xy 102.87 78.74)
 		)
 		(stroke
@@ -3600,13 +3735,13 @@
 	)
 	(wire
 		(pts
-			(xy 62.23 48.26) (xy 81.28 48.26)
+			(xy 59.69 60.96) (xy 68.58 60.96)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e2c8aa5d-5c0c-4f79-9d7e-6304dd56cbfd")
+		(uuid "e1c23a1e-d619-4ce2-beca-996b3578b44d")
 	)
 	(wire
 		(pts
@@ -3630,13 +3765,13 @@
 	)
 	(wire
 		(pts
-			(xy 72.39 100.33) (xy 72.39 105.41)
+			(xy 83.82 63.5) (xy 83.82 128.27)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e3fad2ae-a039-48cb-9c48-9fbb09c75480")
+		(uuid "ee06b0d4-a24f-4c46-8835-b36b11f7e081")
 	)
 	(wire
 		(pts
@@ -3667,16 +3802,6 @@
 			(type default)
 		)
 		(uuid "f67828dc-5677-46ec-8a07-ae900e49516c")
-	)
-	(wire
-		(pts
-			(xy 64.77 82.55) (xy 64.77 100.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f983bd85-82fd-4e40-90f2-f80647db7ee4")
 	)
 	(wire
 		(pts
@@ -3960,7 +4085,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "09bb501a-b103-4548-9c26-0b1513b8bcac")
-		(property "Reference" "U2"
+		(property "Reference" "U3"
 			(at 113.9033 171.45 0)
 			(effects
 				(font
@@ -4095,7 +4220,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "U2")
+					(reference "U3")
 					(unit 1)
 				)
 			)
@@ -4321,6 +4446,72 @@
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
 					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 73.66 72.39 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2117ad11-8f16-47ad-a551-211059f3d43e")
+		(property "Reference" "#PWR023"
+			(at 73.66 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+5V"
+			(at 73.66 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 73.66 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 73.66 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 73.66 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "9ecb8217-0c1a-406d-89bc-9e4d94829443")
+		)
+		(instances
+			(project ""
+				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
+					(reference "#PWR023")
 					(unit 1)
 				)
 			)
@@ -4648,7 +4839,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5e4e4cd3-0c96-4508-8cb9-f98651710c9d")
-		(property "Reference" "D3"
+		(property "Reference" "D1"
 			(at 106.68 67.6274 90)
 			(effects
 				(font
@@ -4711,7 +4902,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "D3")
+					(reference "D1")
 					(unit 1)
 				)
 			)
@@ -4884,6 +5075,73 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 77.47 52.07 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "879240fa-6843-486e-a4aa-95ae57dcdee1")
+		(property "Reference" "#PWR014"
+			(at 83.82 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 81.28 52.0699 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 77.47 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 77.47 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 77.47 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "cbd30183-dafc-4151-bf0f-8c402e87a8de")
+		)
+		(instances
+			(project ""
+				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
+					(reference "#PWR014")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 151.13 55.88 0)
 		(unit 1)
@@ -5014,6 +5272,91 @@
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
 					(reference "#PWR018")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Power_Protection:USBLC6-2P6")
+		(at 73.66 63.5 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9a4a1b71-6ed0-418e-99a8-a5a24d638d92")
+		(property "Reference" "U2"
+			(at 79.756 58.166 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "USBLC6-2P6"
+			(at 79.502 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-666"
+			(at 74.676 56.769 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.st.com/resource/en/datasheet/usblc6-2.pdf"
+			(at 74.676 54.864 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Description" "Very low capacitance ESD protection diode, 2 data-line, SOT-666"
+			(at 73.66 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "c52d3dc6-1844-43fe-8124-d217dc591115")
+		)
+		(pin "5"
+			(uuid "c3ede936-c0dd-45b3-9c48-c290581dd5d1")
+		)
+		(pin "2"
+			(uuid "bc3345bb-e959-47af-8f7a-8db0383887ec")
+		)
+		(pin "6"
+			(uuid "245ebcbc-d15d-4bde-9c90-ea400f6db721")
+		)
+		(pin "4"
+			(uuid "9fb81b6c-2ccb-4d61-a67c-58f8075bd92c")
+		)
+		(pin "1"
+			(uuid "51a7806d-b7ed-47b3-b1ec-ebe81b4cc083")
+		)
+		(instances
+			(project ""
+				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
+					(reference "U2")
 					(unit 1)
 				)
 			)
@@ -5249,7 +5592,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_USB:USB_C_Receptacle_GCT_USB4135-GF-A_6P_TopMnt_Horizontal"
+		(property "Footprint" "Connector_USB:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal"
 			(at 48.26 63.5 0)
 			(effects
 				(font
@@ -5402,72 +5745,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 72.39 105.41 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "c4c18744-35f1-472f-a0c8-a96497fc0601")
-		(property "Reference" "#PWR014"
-			(at 72.39 111.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 72.39 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 72.39 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 72.39 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 72.39 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "747787c4-bce9-4cf1-bc96-5d178794275d")
-		)
-		(instances
-			(project ""
-				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "#PWR014")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 45.72 143.51 90)
 		(unit 1)
@@ -5539,152 +5816,6 @@
 			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
 					(reference "R2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Power_Protection:NUP2105L")
-		(at 64.77 77.47 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "c762a2de-10b4-43dd-94b9-3b902a6b7e5b")
-		(property "Reference" "D1"
-			(at 56.896 80.518 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "NUP2105L"
-			(at 53.34 83.566 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 70.485 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.onsemi.com/pub_link/Collateral/NUP2105L-D.PDF"
-			(at 67.945 74.295 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Dual Line CAN Bus Protector, 24Vrwm"
-			(at 64.77 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "e79f9df3-9aab-4bc2-8558-07746561be76")
-		)
-		(pin "2"
-			(uuid "5aadd987-b56f-4d5d-b301-de8d8b390bf5")
-		)
-		(pin "3"
-			(uuid "ce8878eb-e556-48e2-892e-0d434f27a21e")
-		)
-		(instances
-			(project ""
-				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "D1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Power_Protection:NUP2105L")
-		(at 72.39 90.17 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "cc343a8b-53a9-48c6-a607-b90b532fad00")
-		(property "Reference" "D2"
-			(at 76.2 94.488 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "NUP2105L"
-			(at 73.152 97.282 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 78.105 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.onsemi.com/pub_link/Collateral/NUP2105L-D.PDF"
-			(at 75.565 86.995 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Dual Line CAN Bus Protector, 24Vrwm"
-			(at 72.39 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "0dac1b21-5094-4828-bd24-a17103477426")
-		)
-		(pin "2"
-			(uuid "cfa1c690-b50e-4404-9a4d-b880b70ecff9")
-		)
-		(pin "3"
-			(uuid "4f375c76-fff0-419f-ae5a-e60b5bcc369c")
-		)
-		(instances
-			(project "esp32-clock"
-				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "D2")
 					(unit 1)
 				)
 			)
@@ -5916,7 +6047,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 92.202 137.16 90)
 			(effects
 				(font
@@ -5968,7 +6099,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e7de1734-5cf8-4587-8f53-dcdd312820f3")
-		(property "Reference" "U3"
+		(property "Reference" "U4"
 			(at 133.35 41.91 0)
 			(effects
 				(font
@@ -6023,7 +6154,7 @@
 		(instances
 			(project ""
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679/5f53b007-a500-4fce-b6cc-e08c4de98886"
-					(reference "U3")
+					(reference "U4")
 					(unit 1)
 				)
 			)
