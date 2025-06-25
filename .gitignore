@@ -6,3 +6,4 @@
 build/
 kicad/esp32-clock-backups/
 kicad/jlcpcb/
+**/*.lck
