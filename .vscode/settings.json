@@ -49,5 +49,7 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp"
     },
-    "idf.port": "/dev/ttyACM0"
+    "idf.port": "/dev/ttyACM0",
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.pythonProjects": []
 }
