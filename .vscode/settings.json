@@ -49,7 +49,8 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp"
     },
-    "idf.port": "/dev/ttyACM0",
+    "idf.port": "/dev/ttyUSB0",
     "python-envs.defaultEnvManager": "ms-python.python:system",
-    "python-envs.pythonProjects": []
+    "python-envs.pythonProjects": [],
+    "idf.flashType": "JTAG"
 }
