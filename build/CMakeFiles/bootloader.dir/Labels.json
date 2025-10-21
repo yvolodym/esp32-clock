@@ -2,34 +2,34 @@
 	"sources" : 
 	[
 		{
-			"file" : "/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/CMakeFiles/bootloader"
+			"file" : "/home/yvolodym/workspace/home/esp32-clock/build/CMakeFiles/bootloader"
 		},
 		{
-			"file" : "/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/CMakeFiles/bootloader.rule"
+			"file" : "/home/yvolodym/workspace/home/esp32-clock/build/CMakeFiles/bootloader.rule"
 		},
 		{
-			"file" : "/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/CMakeFiles/bootloader-complete.rule"
+			"file" : "/home/yvolodym/workspace/home/esp32-clock/build/CMakeFiles/bootloader-complete.rule"
 		},
 		{
-			"file" : "/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule"
+			"file" : "/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule"
 		},
 		{
-			"file" : "/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule"
+			"file" : "/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule"
 		},
 		{
-			"file" : "/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule"
+			"file" : "/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule"
 		},
 		{
-			"file" : "/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule"
+			"file" : "/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule"
 		},
 		{
-			"file" : "/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule"
+			"file" : "/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule"
 		},
 		{
-			"file" : "/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule"
+			"file" : "/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule"
 		},
 		{
-			"file" : "/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule"
+			"file" : "/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule"
 		}
 	],
 	"target" : 

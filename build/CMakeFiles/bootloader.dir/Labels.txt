@@ -1,13 +1,13 @@
 # Target labels
  bootloader
 # Source files and their labels
-/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/CMakeFiles/bootloader
-/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/CMakeFiles/bootloader.rule
-/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/CMakeFiles/bootloader-complete.rule
-/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
-/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
-/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
-/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
-/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
-/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
-/home/eugen/Dokumente/PlatformIO/Projects/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
+/home/yvolodym/workspace/home/esp32-clock/build/CMakeFiles/bootloader
+/home/yvolodym/workspace/home/esp32-clock/build/CMakeFiles/bootloader.rule
+/home/yvolodym/workspace/home/esp32-clock/build/CMakeFiles/bootloader-complete.rule
+/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/yvolodym/workspace/home/esp32-clock/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
