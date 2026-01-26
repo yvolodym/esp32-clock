@@ -455,6 +455,7 @@
       "single_global_label": "ignore",
       "unannotated": "error",
       "unconnected_wire_endpoint": "warning",
+      "undefined_netclass": "error",
       "unit_value_mismatch": "error",
       "unresolved_variable": "error",
       "wire_dangling": "error"
@@ -659,8 +660,8 @@
       "Root"
     ],
     [
-      "5f53b007-a500-4fce-b6cc-e08c4de98886",
-      "supply"
+      "7c8dd5e3-c840-4e7b-be2c-a51a03fb33ab",
+      "Supply_2"
     ]
   ],
   "text_variables": {}
