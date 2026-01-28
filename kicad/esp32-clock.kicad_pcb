@@ -8021,7 +8021,18 @@
 			)
 			(fill no)
 			(layer "F.SilkS")
-			(uuid "d18fd8a1-a5b0-4668-ab94-bbfe30772c44")
+			(uuid "dc7eca75-2681-42d5-b63c-4201f8507ef2")
+		)
+		(fp_rect
+			(start -2 -6.95)
+			(end 2 1.9)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "cdafb056-cfbd-4b7b-ac1b-5d95ccc16bb6")
 		)
 		(fp_text user "${REFERENCE}"
 			(at -7.62 -2.54 90)
