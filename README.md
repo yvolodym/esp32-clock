@@ -11,6 +11,7 @@ This project is intended as training for esp8266. The aim of this project is to 
 
 ### HARDWARE
 ESP32-PICO-V3
+CR2032
 
 ### Software
 * https://github.com/espressif/esp-idf/blob/master/examples/peripherals/lcd/spi_lcd_touch/README.md
