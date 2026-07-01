@@ -1,4 +1,4 @@
-27369525003342828
+27373098208001020
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -75859,6 +75859,13 @@ QFN NoLead
 37
 33
 PCM_yvolodym
+CR3220
+
+
+0
+2
+2
+PCM_yvolodym
 ESP32-WROVER-IB
 
 
@@ -107698,6 +107705,13 @@ Varistor
 Varistor_Panasonic_VF
 Panasonic VF series varistor, 6x8mm body, 3.2mm height, https://mediap.industry.panasonic.eu/assets/imported/industrial.panasonic.com/cdbs/www-data/pdf/AWA0000/AWA0000C4.pdf
 Varistor VF
+0
+2
+2
+eugen
+CR3220
+
+
 0
 2
 2

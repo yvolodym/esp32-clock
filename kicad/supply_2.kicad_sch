@@ -5225,7 +5225,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Battery:BatteryHolder_Keystone_1058_1x2032"
+		(property "Footprint" "PCM_yvolodym:CR2032"
 			(at 177.8 130.81 0)
 			(effects
 				(font
@@ -5234,7 +5234,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.batteryspace.com/prod-specs/NCR18650B.pdf"
+		(property "Datasheet" ""
 			(at 177.8 130.81 0)
 			(effects
 				(font
@@ -5243,7 +5243,16 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Panasonic NCR18650B 3.7V Li-ion 18650 cell"
+		(property "Description" "CR2032"
+			(at 177.8 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" ""
 			(at 177.8 130.81 0)
 			(effects
 				(font
