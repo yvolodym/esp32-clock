@@ -4,8 +4,10 @@
 .vscode/launch.json
 .vscode/ipch
 build/
+managed_components/
 kicad/esp32-clock-backups/
 kicad/jlcpcb/
 **/*.lck
 **/*.txt
+!**/CMakeLists.txt
 **/*.dsn

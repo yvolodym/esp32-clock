@@ -1,0 +1,79 @@
+#
+# Arduino-as-ESP-IDF-component (replaces platformio.ini's `framework = arduino`)
+#
+CONFIG_AUTOSTART_ARDUINO=y
+CONFIG_FREERTOS_HZ=1000
+CONFIG_ARDUHAL_LOG_DEFAULT_LEVEL_VERBOSE=y
+
+# Required by arduino-esp32 3.x when built against ESP-IDF 6.x
+CONFIG_LIBC_NEWLIB=y
+CONFIG_COMPILER_DISABLE_DEFAULT_ERRORS=y
+
+# Only compile the Arduino core libraries this project actually uses (SPI/Wire/
+# WiFi/WebServer/DNSServer for WiFiManager's portal, FS/SPIFFS for fonts).
+# Keeps the image well inside the 0x1D0000 app partition in partitions_custom.csv.
+CONFIG_ARDUINO_SELECTIVE_COMPILATION=y
+CONFIG_ARDUINO_SELECTIVE_SPI=y
+CONFIG_ARDUINO_SELECTIVE_Wire=y
+CONFIG_ARDUINO_SELECTIVE_FS=y
+CONFIG_ARDUINO_SELECTIVE_SPIFFS=y
+CONFIG_ARDUINO_SELECTIVE_Network=y
+CONFIG_ARDUINO_SELECTIVE_WiFi=y
+CONFIG_ARDUINO_SELECTIVE_WebServer=y
+CONFIG_ARDUINO_SELECTIVE_DNSServer=y
+CONFIG_ARDUINO_SELECTIVE_Update=y
+CONFIG_ARDUINO_SELECTIVE_Hash=y
+CONFIG_ARDUINO_SELECTIVE_AsyncUDP=y
+# CONFIG_ARDUINO_SELECTIVE_ArduinoOTA is not set
+# CONFIG_ARDUINO_SELECTIVE_BLE is not set
+# CONFIG_ARDUINO_SELECTIVE_BluetoothSerial is not set
+# CONFIG_ARDUINO_SELECTIVE_EEPROM is not set
+# CONFIG_ARDUINO_SELECTIVE_ESP_SR is not set
+# CONFIG_ARDUINO_SELECTIVE_ESPmDNS is not set
+# CONFIG_ARDUINO_SELECTIVE_Ethernet is not set
+# CONFIG_ARDUINO_SELECTIVE_FFat is not set
+# CONFIG_ARDUINO_SELECTIVE_HTTPClient is not set
+# CONFIG_ARDUINO_SELECTIVE_Insights is not set
+# CONFIG_ARDUINO_SELECTIVE_LittleFS is not set
+# CONFIG_ARDUINO_SELECTIVE_Matter is not set
+# CONFIG_ARDUINO_SELECTIVE_NetBIOS is not set
+# CONFIG_ARDUINO_SELECTIVE_NetworkClientSecure is not set
+# CONFIG_ARDUINO_SELECTIVE_OpenThread is not set
+# CONFIG_ARDUINO_SELECTIVE_PPP is not set
+# CONFIG_ARDUINO_SELECTIVE_Preferences is not set
+# CONFIG_ARDUINO_SELECTIVE_RainMaker is not set
+# CONFIG_ARDUINO_SELECTIVE_SD is not set
+# CONFIG_ARDUINO_SELECTIVE_SD_MMC is not set
+# CONFIG_ARDUINO_SELECTIVE_SimpleBLE is not set
+# CONFIG_ARDUINO_SELECTIVE_Ticker is not set
+# CONFIG_ARDUINO_SELECTIVE_WiFiProv is not set
+# CONFIG_ARDUINO_SELECTIVE_Zigbee is not set
+
+#
+# Partition table (unchanged from PlatformIO: board_build.partitions)
+#
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions_custom.csv"
+CONFIG_PARTITION_TABLE_FILENAME="partitions_custom.csv"
+
+#
+# Flash settings (unchanged from PlatformIO: board_build.f_flash / flash_mode, board_upload.flash_size)
+#
+CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+CONFIG_ESPTOOLPY_FLASHFREQ_40M=y
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+
+#
+# TFT_eSPI (unchanged from PlatformIO's USER_SETUP_LOADED build_flags)
+#
+CONFIG_TFT_GC9A01_DRIVER=y
+CONFIG_TFT_WIDTH=240
+CONFIG_TFT_HEIGHT=240
+CONFIG_TFT_MISO=25
+CONFIG_TFT_MOSI=22
+CONFIG_TFT_SCLK=10
+CONFIG_TFT_CS=20
+CONFIG_TFT_DC=21
+CONFIG_TFT_RST=19
+# platformio.ini never wired a backlight pin either; keep backlight always-on/uncontrolled
+CONFIG_ENABLE_BL=n
