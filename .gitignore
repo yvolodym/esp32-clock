@@ -5,6 +5,7 @@
 .vscode/ipch
 build/
 managed_components/
+**/.tokensave/
 kicad/esp32-clock-backups/
 kicad/jlcpcb/
 **/*.lck
