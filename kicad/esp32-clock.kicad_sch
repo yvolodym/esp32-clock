@@ -3636,7 +3636,7 @@
 	)
 	(text "SCL"
 		(exclude_from_sim no)
-		(at 152.4 124.46 0)
+		(at 151.384 124.714 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3646,7 +3646,7 @@
 	)
 	(text "VCC"
 		(exclude_from_sim no)
-		(at 152.4 129.54 0)
+		(at 151.892 129.794 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3666,7 +3666,7 @@
 	)
 	(text "GND"
 		(exclude_from_sim no)
-		(at 152.4 127 0)
+		(at 151.638 127.254 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5957,7 +5957,7 @@
 			(uuid "dbbbbd01-54c8-4bb3-abf2-a796612505cd")
 		)
 		(instances
-			(project ""
+			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
 					(reference "R20")
 					(unit 1)
@@ -6936,7 +6936,7 @@
 			(uuid "fc9c49f5-474a-42b7-b6e5-4bfde35971ba")
 		)
 		(instances
-			(project ""
+			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
 					(reference "U2")
 					(unit 1)
@@ -7079,7 +7079,7 @@
 			(uuid "b4b5dc3a-7576-4578-839e-3beda2ee4809")
 		)
 		(instances
-			(project ""
+			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
 					(reference "#PWR032")
 					(unit 1)
@@ -7281,7 +7281,7 @@
 			(uuid "e215806b-106c-45e0-869d-ade1c57b5389")
 		)
 		(instances
-			(project ""
+			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
 					(reference "J2")
 					(unit 1)
@@ -7493,7 +7493,7 @@
 			(uuid "6ee29c0e-c95a-49a1-857d-e128b4a129c5")
 		)
 		(instances
-			(project ""
+			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
 					(reference "R21")
 					(unit 1)
@@ -7781,7 +7781,7 @@
 			(uuid "29f1e646-b233-46f2-8765-db010d45c0d4")
 		)
 		(instances
-			(project ""
+			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
 					(reference "#PWR029")
 					(unit 1)
@@ -9373,7 +9373,7 @@
 			(uuid "0bac21f0-ca28-4252-b221-321ed837f968")
 		)
 		(instances
-			(project ""
+			(project "esp32-clock"
 				(path "/705cc6fa-d5d2-496f-be92-82c69a6f5679"
 					(reference "R19")
 					(unit 1)
