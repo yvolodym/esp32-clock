@@ -12,3 +12,4 @@ kicad/jlcpcb/
 **/*.txt
 !**/CMakeLists.txt
 **/*.dsn
+kicad/analysis/
